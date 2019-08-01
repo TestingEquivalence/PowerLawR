@@ -3,4 +3,15 @@ readVector<-function(pathOfFile){
   return(v$V1)
 }
 
-# res=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
+list2freq<function(v, kmin, kmax, scale){
+  #cut the list and rescale
+  v=v[v>=kmin]
+  v=v[v<=kmax]
+  v=v/scale
+  v=round(v,0)
+  v=as.integer(v)
+  
+  
+  
+  return(v)
+}
