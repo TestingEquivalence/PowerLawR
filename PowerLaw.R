@@ -18,8 +18,12 @@ distanceCDF<-function(F1,F2){
   return(sqrt(sum(v)))
 }
 
-distanceDensity<-function(f1,f2){
-  F1=cumsum(f1)
-  F2=cumsum(f2)
-  return(distanceCDF(F1,F2))
+nearestPowerLaw<-function(CDF, kmin,kmax,betaLower, betaUpper){
+  f<-function(beta){
+    F1=powerLawCDF(beta,kmin,kmax)
+    return(distanceCDF(F1,CDF))
+  }
+  
+  res=optimize(f,c(betaLower,betaUpper),lower=betaLower,upper = betaUpper)
+  return(res)
 }
