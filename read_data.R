@@ -3,15 +3,19 @@ readVector<-function(pathOfFile){
   return(v$V1)
 }
 
-list2freq<function(v, kmin, kmax, scale){
+list2freq<-function(v, kmin, kmax, scale){
   #cut the list and rescale
   v=v[v>=kmin]
   v=v[v<=kmax]
   v=v/scale
-  v=round(v,0)
-  v=as.integer(v)
   
+  kmin=as.integer(kmin/scale)
+  v=v-kmin
   
+  kmax=as.integer(kmax/scale)
   
-  return(v)
+  nbins=kmax-kmin+1
+  
+  res=tabulate(v, nbins)
+  return(res)
 }

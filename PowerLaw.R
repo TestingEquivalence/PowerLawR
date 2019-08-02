@@ -1,6 +1,5 @@
 powerLawDensity<-function(beta, kmin, kmax){
   v=c(kmin:kmax)
-  Math.Pow(k, -b)
   v=v ^ (-beta)
   v=v /sum(v)
   return (v)
