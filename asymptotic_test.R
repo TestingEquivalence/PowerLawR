@@ -35,7 +35,7 @@ asymptotic_test<-function(alpha, counting, kmin, kmax, scale)
   
   res = nearestPowerLaw(cdf,kmin,kmax,1,3)
   beta=res$minimum
-  min_distance=res$objective
+  distance=res$objective
   pLawCDF=powerLawCDF(beta,kmin,kmax)
   
   drv=derivative(cdf,pLawCDF)
@@ -43,10 +43,10 @@ asymptotic_test<-function(alpha, counting, kmin, kmax, scale)
   vol=vol/ sqrt(n);
   
   qt=qnorm(1-alpha,0,1)
-  min_eps = min_distance*min_distance + qt*vol
+  min_eps = distance*distance + qt*vol
   min_eps=sqrt(min_eps)
   
-  vec=c(min_eps,min_distance,beta)
-  names(vec)=c("min_eps","min_distance","beta")
+  vec=c(min_eps,distance,beta)
+  names(vec)=c("min_eps","distance","beta")
   return(vec)
 }
