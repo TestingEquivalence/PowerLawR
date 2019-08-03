@@ -2,6 +2,7 @@
 derivative<-function(F1,F2)
 {
   Z=2*(F1-F2)
+  Z=rev(Z)
   Z=cumsum(Z)
   Z=rev(Z)
   return(Z)
