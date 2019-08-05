@@ -50,3 +50,44 @@ asymptotic_test<-function(alpha, counting, kmin, kmax, scale)
   names(vec)=c("min_eps","distance","beta")
   return(vec)
 }
+
+multiple_asymptotic_test <- function(alpha, counting, kmins, kmaxs,scale) {
+  nrow=length(kmins)
+  ncol = length(kmaxs)
+  min_eps=matrix(data=NA,nrow,ncol)
+  beta=matrix(data=NA,nrow,ncol)
+  distance=matrix(data=NA,nrow,ncol)
+  
+  rownames(min_eps)=kmins
+  rownames(beta)=kmins
+  rownames(distance)=kmins
+  
+  colnames(min_eps)=kmaxs
+  colnames(beta)=kmaxs
+  colnames(distance)=kmaxs
+  
+  i=c(1:nrow)
+  j=c(1:ncol)
+  grd=expand.grid(i,j)
+  colnames(grd)=c("i","j")
+  
+  f<-function(row, kmins, kmaxs, alpha, scale){
+    kmin=kmins[row[1]]
+    kmax=kmaxs[row[2]]
+    res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+    return(c(row[1],row[2],res))
+  }
+
+  ls=apply(grd, 1, f, kmins,kmaxs,alpha,scale)
+
+  report<-function(r){
+    min_eps[r[1],r[2]]=r[3]
+    distance[r[1],r[2]]=r[4]
+    beta[r[1],r[2]]=r[5]
+  }
+
+  apply(ls,2,report)
+
+  ls=list(min_eps=min_eps,distance=distance,beta=beta)
+  return(ls)
+}
