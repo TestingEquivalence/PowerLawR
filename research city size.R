@@ -7,13 +7,13 @@ citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\City
 
 kmins=c(10000,20000,50000,100000)
 kmaxs=c(max(citySize),5000000,10000000,20000000)
-scales=c(10000,1000,100,10,1)
+scale=10000
 alpha=0.05
 
-result=multiple_asymptotic_test(alpha,citySize,kmins,kmaxs, 10000)
+result=multiple_asymptotic_test(alpha,citySize,kmins,kmaxs, scale)
 
 
-write.table(beta,"beta_100.txt")
-write.table(distance,"distance_100.txt")
-write.table(min_eps,"min_eps_100.txt")
+write.table(result$beta,paste("beta_",scale,".txt"))
+write.table(result$distance,paste("distance_",scale,".txt"))
+write.table(result$min_eps,paste("min_eps_",scale,".txt"))
 

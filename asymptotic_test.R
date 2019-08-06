@@ -51,6 +51,14 @@ asymptotic_test<-function(alpha, counting, kmin, kmax, scale)
   return(vec)
 }
 
+fmultiple<-function(row, kmins, kmaxs, alpha, scale, counting){
+  kmin=kmins[row[1]]
+  kmax=kmaxs[row[2]]
+  res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+  print(paste("done: ","kmin=",kmin," kmax=", kmax))
+  return(c(row[1],row[2],res))
+}
+
 multiple_asymptotic_test <- function(alpha, counting, kmins, kmaxs,scale) {
   nrow=length(kmins)
   ncol = length(kmaxs)
@@ -71,22 +79,21 @@ multiple_asymptotic_test <- function(alpha, counting, kmins, kmaxs,scale) {
   grd=expand.grid(i,j)
   colnames(grd)=c("i","j")
   
-  f<-function(row, kmins, kmaxs, alpha, scale){
-    kmin=kmins[row[1]]
-    kmax=kmaxs[row[2]]
-    res=asymptotic_test(alpha,counting,kmin,kmax,scale)
-    return(c(row[1],row[2],res))
+  cl=getCluster()
+  clusterExport(cl,c("fmultiple"))
+  ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale, counting)
+  stopCluster(cl)
+  
+  for (rn in c(1:ncol(ls))){
+    r=ls[,rn]
+    i=r[1]
+    j=r[2]
+    min_eps[i,j]=r[3]
+    distance[i,j]=r[4]
+    beta[i,j]=r[5]
   }
 
-  ls=apply(grd, 1, f, kmins,kmaxs,alpha,scale)
-
-  report<-function(r){
-    min_eps[r[1],r[2]]=r[3]
-    distance[r[1],r[2]]=r[4]
-    beta[r[1],r[2]]=r[5]
-  }
-
-  apply(ls,2,report)
+  
 
   ls=list(min_eps=min_eps,distance=distance,beta=beta)
   return(ls)

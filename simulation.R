@@ -8,7 +8,8 @@ getCluster<-function(){
   
   # Initiate cluster
   cl <- makeCluster(no_cores,'SOCK')
-  clusterExport(cl,c("powerLawDensity"))
+  clusterExport(cl,c("powerLawDensity","powerLawCDF","distanceCDF","nearestPowerLaw","derivative","asympt_stdev","asymptotic_test",
+                     "list2freq"))
   
   return(cl)
 }
