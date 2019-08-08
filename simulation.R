@@ -14,4 +14,23 @@ getCluster<-function(){
   return(cl)
 }
 
+toss<-function(i,p, n, kmin, kmax,scale, eps){
+  counting=rmultinom(n=1,size=n,prob=p)
+  res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+  return(res[1]<=eps)
+}
+
+powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps){
+  set.seed(01082019)
+  i=c(1:nSamples)
+  v=sapply(i, toss,p,n,kmin,kmax,scale,eps)
+  return(sum(v==TRUE)/nSamples)
+}
+
+powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps){
+  cl=getCluster()
+  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,scale,eps)
+  stopCluster(cl)
+  return(v)
+}
  
