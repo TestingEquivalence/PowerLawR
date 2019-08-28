@@ -1,7 +1,7 @@
-randomPoint<-function(l, eps){
+closeRandomPoint<-function(p,n, eps){
   repeat{
     rtab=as.vector(tab)
-    v=runif(l)
+    v=rmultinom(n=1,size=n,prob=p)
     v=v/n
     v=cumsum(v)
     res=nearestPowerLaw(v,kmin,kmax,1,3)
