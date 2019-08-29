@@ -11,7 +11,7 @@ powerLawCDF<-function(beta, kmin, kmax){
   return(v)
 }
 
-distanceCDF<-function(F1,F2){
+l2<-function(F1,F2){
   v=F1-F2
   v=v*v
   return(sqrt(sum(v)))
@@ -20,7 +20,7 @@ distanceCDF<-function(F1,F2){
 nearestPowerLaw<-function(CDF, kmin,kmax,betaLower, betaUpper){
   f<-function(beta){
     F1=powerLawCDF(beta,kmin,kmax)
-    return(distanceCDF(F1,CDF))
+    return(l2(F1,CDF))
   }
   
   res=optimize(f,c(betaLower,betaUpper),lower=betaLower,upper = betaUpper)

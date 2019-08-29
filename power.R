@@ -12,20 +12,35 @@ closeRandomPoint<-function(p,n, eps){
   }
 }
 
-boundaryPoint<-function(i,l,eps,kmin,kmax){
-  p=closeRandomPoint(tab,eps,distance)
-  n=sum(tab)
-  tab=tab/n
-  
-  if (identical(distance,cond_l2)){
-    q=p2triangle(startValue(tab))
-  }
-  
-  if (identical(distance,min_l2)){
-    q=min_l22(tab)$par
-    q=p2triangle(q)
-  }
-  
-  res=linearBoundaryPoint(p,q,eps,distance)
-  return(res)
+linComb<-function(x,y,a){
+  return((1-a)*x+a*y) 
 }
+
+linearBoundaryPoint<-function(p,q,eps,kmin,kmax){
+  P=cumsum(p)
+  Q=cumsum(q)
+  
+  aim<-function(a){
+    lc=linComb(P,Q,a)
+    res = nearestPowerLaw(lc,kmin,kmax,1,3)
+    beta=res$minimum
+    distance=res$objective
+    return(distance-eps)
+  }
+  
+  aMin=uniroot(aim, c(0,1))
+  return(linComb(p,q,aMin$root))
+}
+
+
+randomBoundaryPoint<-function(n,eps,kmin,kmax,beta){
+  p=powerLawDensity(beta,kmin,kmax)
+  q=closeRandomPoint(p,n,eps)
+  lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
+  
+}
+
+boundaryPower<-function(n,eps,kmin,kmax,beta,alpha){
+  i=c(1:100)
+}
+

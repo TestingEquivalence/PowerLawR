@@ -46,8 +46,8 @@ asymptotic_test<-function(alpha, counting, kmin, kmax, scale)
   min_eps = distance*distance + qt*vol
   min_eps=sqrt(min_eps)
   
-  vec=c(min_eps,distance,beta)
-  names(vec)=c("min_eps","distance","beta")
+  vec=c(min_eps,distance,beta,n)
+  names(vec)=c("min_eps","distance","beta","sample_size")
   return(vec)
 }
 
@@ -65,14 +65,20 @@ multiple_asymptotic_test <- function(alpha, counting, kmins, kmaxs,scale) {
   min_eps=matrix(data=NA,nrow,ncol)
   beta=matrix(data=NA,nrow,ncol)
   distance=matrix(data=NA,nrow,ncol)
+  sample_size=matrix(data=NA,nrow,ncol)
+  
   
   rownames(min_eps)=kmins
   rownames(beta)=kmins
   rownames(distance)=kmins
+  rownames(sample_size)=kmins
+  
   
   colnames(min_eps)=kmaxs
   colnames(beta)=kmaxs
   colnames(distance)=kmaxs
+  colnames(sample_size)=kmaxs
+  
   
   i=c(1:nrow)
   j=c(1:ncol)
@@ -91,10 +97,9 @@ multiple_asymptotic_test <- function(alpha, counting, kmins, kmaxs,scale) {
     min_eps[i,j]=r[3]
     distance[i,j]=r[4]
     beta[i,j]=r[5]
+    sample_size[i,j]=r[6]
   }
 
-  
-
-  ls=list(min_eps=min_eps,distance=distance,beta=beta)
+  ls=list(min_eps=min_eps,distance=distance,beta=beta, sample_size=sample_size)
   return(ls)
 }
