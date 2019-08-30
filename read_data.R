@@ -10,7 +10,8 @@ list2freq<-function(v, kmin, kmax, scale){
   v=v/scale
   
   kmin=as.integer(kmin/scale)
-  v=v-kmin
+  v=v-kmin+1
+  v=as.integer(v)
   
   kmax=as.integer(kmax/scale)
   

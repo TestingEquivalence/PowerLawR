@@ -6,6 +6,7 @@ source("simulation.R")
 
 #vector of city sizes in Germany
 citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
+list2freq(citySize,10000,max(citySize),10000)
 
 #different k_min values
 kmins=c(10000,20000,50000,100000)
@@ -15,7 +16,7 @@ kmaxs=c(max(citySize),5000000,10000000,20000000)
 
 #scale for the populatuion measurement
 #it is necessary for the computational feasibility.
-scale=10000
+scale=1000
 #significance level
 alpha=0.05
 
