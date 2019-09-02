@@ -33,11 +33,13 @@ write.table(result$sample_size,paste("sample_size_",scale,".txt"))
 
 #compute test power at the power law points
 alpha=0.05
-kmin=10000
-kmax=max(citySize)
+kmin=20000
+kmax=10000000
 scale=10000
 beta=2
 nSamples=1000
 eps=0.2
+n=662
 
-power=testPowerAtPowerLaw(citySize,kmin,kmax,scale,beta,eps,nSamples,alpha)
+size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,eps,nSamples,alpha)
+write.table(size, "size.txt")

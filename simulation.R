@@ -9,9 +9,16 @@ getCluster<-function(){
   # Initiate cluster
   cl <- makeCluster(no_cores,'SOCK')
   clusterExport(cl,c("powerLawDensity","powerLawCDF","l2","nearestPowerLaw","derivative","asympt_stdev","asymptotic_test",
-                     "list2freq"))
+                     "list2freq","fullToss"))
   
   return(cl)
+}
+
+fullToss<-function(i,p, n, kmin, kmax,scale, eps,alpha){
+  set.seed(i)
+  counting=rmultinom(n=1,size=n,prob=p)
+  res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+  return(res)
 }
 
 toss<-function(i,p, n, kmin, kmax,scale, eps,alpha){
