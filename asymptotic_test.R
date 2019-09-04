@@ -23,13 +23,14 @@ asympt_stdev<-function(p,derivative){
   return (sqrt(vnsq))
 }
 
-asymptotic_test<-function(alpha, counting, kmin, kmax, scale)
+
+
+asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
 {
-  #calcualte counting frequnce
-  df=list2freq(counting,kmin,kmax,scale)
-  n=sum(df)
-  df=df/n
-  cdf=cumsum(df)
+  #calcualte cdf
+  n=sum(frequency)
+  frequency=frequency/n
+  cdf=cumsum(frequency)
   kmin=kmin/scale
   kmax=kmax/scale
   
@@ -39,7 +40,7 @@ asymptotic_test<-function(alpha, counting, kmin, kmax, scale)
   pLawCDF=powerLawCDF(beta,kmin,kmax)
   
   drv=derivative(cdf,pLawCDF)
-  vol=asympt_stdev(df,drv)
+  vol=asympt_stdev(frequency,drv)
   vol=vol/ sqrt(n);
   
   qt=qnorm(1-alpha,0,1)
@@ -54,7 +55,8 @@ asymptotic_test<-function(alpha, counting, kmin, kmax, scale)
 fmultiple<-function(row, kmins, kmaxs, alpha, scale, counting){
   kmin=kmins[row[1]]
   kmax=kmaxs[row[2]]
-  res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+  frequency=list2freq(counting,kmin,kmax,scale)
+  res=asymptotic_test(alpha,frequency,kmin,kmax,scale)
   print(paste("done: ","kmin=",kmin," kmax=", kmax))
   return(c(row[1],row[2],res))
 }

@@ -14,7 +14,7 @@ getCluster<-function(){
   return(cl)
 }
 
-fullToss<-function(i,p, n, kmin, kmax,scale, eps,alpha){
+fullToss<-function(i,p, n, kmin, kmax,scale, alpha){
   set.seed(i)
   counting=rmultinom(n=1,size=n,prob=p)
   res=asymptotic_test(alpha,counting,kmin,kmax,scale)

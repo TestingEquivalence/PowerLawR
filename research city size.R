@@ -15,7 +15,7 @@ kmaxs=c(max(citySize),5000000,10000000,20000000)
 
 #scale for the populatuion measurement
 #it is necessary for the computational feasibility.
-scale=100
+scale=10000
 #significance level
 alpha=0.05
 
@@ -38,8 +38,7 @@ kmax=10000000
 scale=10000
 beta=2
 nSamples=1000
-eps=0.2
 n=662
 
-size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,eps,nSamples,alpha)
+size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha)
 write.table(size, "size.txt")
