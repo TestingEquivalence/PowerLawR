@@ -37,10 +37,21 @@ randomBoundaryPoint<-function(n,eps,kmin,kmax,beta){
   p=powerLawDensity(beta,kmin,kmax)
   q=closeRandomPoint(p,n,eps)
   lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
-  
 }
 
-boundaryPower<-function(n,eps,kmin,kmax,beta,alpha){
+boundaryPower<-function(n,eps,kmin,kmax,scale,beta,alpha){
+  kmin=kmin/scale
+  kmax=kmax/scale
+  
   i=c(1:100)
+  
+  f<-function(i){
+    randomBoundaryPoint(n,eps,kmin,kmax,beta)
+  }
+  
+  set.seed(01102019)
+  rndBndPoints=lapply(i, f)
+  
+  powerAtPoints(rndBndPoints,n,nSamples = 1000,kmin,kmax,1,eps,alpha)
 }
 

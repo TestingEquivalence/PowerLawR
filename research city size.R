@@ -3,6 +3,7 @@ source("read_data.R")
 source("asymptotic_test.R")
 source("size.R")
 source("simulation.R")
+source("power.R")
 
 #vector of city sizes in Germany
 citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
@@ -42,3 +43,6 @@ n=662
 
 size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha)
 write.table(size, "size.txt")
+
+#compute test power at the boundary points,
+#which are close to t
