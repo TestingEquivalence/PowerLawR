@@ -1,6 +1,5 @@
 closeRandomPoint<-function(p,n, eps){
   repeat{
-    rtab=as.vector(tab)
     v=rmultinom(n=1,size=n,prob=p)
     v=v/n
     v=cumsum(v)
@@ -8,7 +7,7 @@ closeRandomPoint<-function(p,n, eps){
     if (res$objective>eps)
       if (res$minimum>1)
         if (res$minimum<3)
-          return(res)
+          return(v)
   }
 }
 
@@ -32,11 +31,11 @@ linearBoundaryPoint<-function(p,q,eps,kmin,kmax){
   return(linComb(p,q,aMin$root))
 }
 
-
 randomBoundaryPoint<-function(n,eps,kmin,kmax,beta){
   p=powerLawDensity(beta,kmin,kmax)
   q=closeRandomPoint(p,n,eps)
   lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
+  return(lp)
 }
 
 boundaryPower<-function(n,eps,kmin,kmax,scale,beta,alpha){

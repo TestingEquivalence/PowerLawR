@@ -45,4 +45,15 @@ size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha)
 write.table(size, "size.txt")
 
 #compute test power at the boundary points,
-#which are close to t
+#which are close to the given power law
+alpha=0.05
+kmin=20000
+kmax=10000000
+scale=10000
+beta=2
+nSamples=1000
+n=662
+eps=0.1
+
+power=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha)
+write.table(power, "power.txt")
