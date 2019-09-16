@@ -53,7 +53,7 @@ scale=10000
 beta=2
 nSamples=1000
 n=662
-eps=0.1
+eps=0.08
 
-power=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha)
-write.table(power, "power.txt")
+pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha)
+write.table(pw, "power.txt")

@@ -9,7 +9,7 @@ getCluster<-function(){
   # Initiate cluster
   cl <- makeCluster(no_cores,'SOCK')
   clusterExport(cl,c("powerLawDensity","powerLawCDF","l2","nearestPowerLaw","derivative","asympt_stdev","asymptotic_test",
-                     "list2freq","fullToss"))
+                     "list2freq","fullToss","toss"))
   
   return(cl)
 }

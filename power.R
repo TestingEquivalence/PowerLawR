@@ -52,6 +52,7 @@ boundaryPower<-function(n,eps,kmin,kmax,scale,beta,alpha){
   set.seed(01102019)
   rndBndPoints=lapply(i, f)
   
-  powerAtPoints(rndBndPoints,n,nSamples = 1000,kmin,kmax,1,eps,alpha)
+  res=powerAtPoints(rndBndPoints,n,nSamples = 1000,kmin,kmax,1,eps,alpha)
+  return(res)
 }
 
