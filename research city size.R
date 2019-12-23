@@ -9,14 +9,14 @@ source("power.R")
 citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
 
 #different k_min values
-kmins=c(10000,20000,30000,40000,50000)
+kmins=c(10e3,20e3,30e3,40e3,50e3)
 
 #different k_max values, first value coincides with largest city
-kmaxs=c(max(citySize),5000000,10000000,20000000)
+kmaxs=c(max(citySize),5e6,10e6,20e6)
 
 #scale for the populatuion measurement
 #it is necessary for the computational feasibility.
-scale=10000
+scale=100
 #significance level
 alpha=0.05
 
