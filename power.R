@@ -1,4 +1,4 @@
-closeRandomPoint<-function(p,n, eps,beta){
+closeRandomPoint<-function(p,n, eps,beta,kmin,kmax){
   repeat{
     v=rmultinom(n=1,size=n,prob=p)
     v=v/n
@@ -49,8 +49,9 @@ linearBoundaryPoint<-function(p,q,eps,kmin,kmax){
 
 randomBoundaryPoint1<-function(n,eps,kmin,kmax,beta){
   p=powerLawDensity(beta,kmin,kmax)
-  q=closeRandomPoint(p,n,eps,beta)
+  q=closeRandomPoint(p,n, eps,beta,kmin,kmax)
   lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
+  res=nearestPowerLaw(cumsum(lp),kmin,kmax,1,3)
   return(lp)
 }
 
@@ -60,24 +61,38 @@ randomBoundaryPoint2<-function(n,eps,kmin,kmax,beta,p){
   return(lp)
 }
 
-randomBoundaryPoint3 <-function(n,eps,kmin,kmax,beta,p){
-  
-  q=closeRandomPoint(p,n,eps,beta)
+randomBoundaryPoint3 <-function(n,eps,kmin,kmax,beta){
+  p=powerLawDensity(beta,kmin,kmax)
+  q=uniformRandomStress(kmin,kmax,beta,eps)
   lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
   return(lp)
 } 
 
-boundaryPower<-function(n,eps,kmin,kmax,scale,beta,alpha){
+boundaryPower<-function(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType,p=NULL){
   kmin=kmin/scale
   kmax=kmax/scale
   
   i=c(1:100)
   
-  f<-function(i){
-    randomBoundaryPoint1(n,eps,kmin,kmax,beta)
+  if (boundaryPointType==1){
+    f<-function(i){
+      randomBoundaryPoint1(n,eps,kmin,kmax,beta)
+    }  
   }
   
-  set.seed(01102019)
+  if (boundaryPointType==2){
+    f<-function(i){
+      randomBoundaryPoint2(n,eps,kmin,kmax,beta,p)
+    }
+  }
+  
+  if (boundaryPointType==3){
+    f<-function(i){
+      randomBoundaryPoint3(n,eps,kmin,kmax,beta)
+    }
+  }
+  
+  set.seed(01012020)
   rndBndPoints=lapply(i, f)
   
   res=powerAtPoints(rndBndPoints,n,nSamples = 1000,kmin,kmax,1,eps,alpha)

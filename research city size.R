@@ -1,9 +1,4 @@
-source("PowerLaw.R")
-source("read_data.R")
-source("asymptotic_test.R")
-source("size.R")
-source("simulation.R")
-source("power.R")
+ 
 
 #vector of city sizes in Germany
 citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
@@ -34,26 +29,17 @@ write.table(result$sample_size,paste("sample_size_",scale,".txt"))
 
 #compute test power at the power law points
 alpha=0.05
-kmin=20000
-kmax=10000000
-scale=10000
+kmin=20e3
+kmax=10e6
+scale=10e3
 beta=2
 nSamples=1000
 n=662
+eps=0.1
 
 size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha)
-write.table(size, "size.txt")
+write.table(t(size), "size.txt")
 
-#compute test power at the boundary points,
-#which are close to the given power law
-alpha=0.05
-kmin=20000
-kmax=10000000
-scale=10000
-beta=2
-nSamples=1000
-n=662
-eps=0.08
 
-pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha)
+pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1)
 write.table(pw, "power.txt")
