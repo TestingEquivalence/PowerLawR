@@ -56,8 +56,9 @@ randomBoundaryPoint1<-function(n,eps,kmin,kmax,beta){
 }
 
 randomBoundaryPoint2<-function(n,eps,kmin,kmax,beta,p){
-  q=closeRandomPoint(p,n,eps,beta)
+  q=closeRandomPoint(p,n,eps,beta,kmin,kmax)
   lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
+  res=nearestPowerLaw(cumsum(lp),kmin,kmax,1,3)
   return(lp)
 }
 
@@ -65,10 +66,13 @@ randomBoundaryPoint3 <-function(n,eps,kmin,kmax,beta){
   p=powerLawDensity(beta,kmin,kmax)
   q=uniformRandomStress(kmin,kmax,beta,eps)
   lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
+  res=nearestPowerLaw(cumsum(lp),kmin,kmax,1,3)
   return(lp)
 } 
 
 boundaryPower<-function(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType,p=NULL){
+  
+  
   kmin=kmin/scale
   kmax=kmax/scale
   

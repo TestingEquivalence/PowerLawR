@@ -1,4 +1,9 @@
- 
+source("PowerLaw.R")
+source("asymptotic_test.R")
+source("power.R")
+source("read_data.R")
+source("simulation.R")
+source("size.R")
 
 #vector of city sizes in Germany
 citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
@@ -40,6 +45,7 @@ eps=0.1
 size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha)
 write.table(t(size), "size.txt")
 
-
-pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1)
+p=list2freq(citySize,kmin,kmax,scale)
+p=p/sum(p)
+pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,p=)
 write.table(pw, "power.txt")
