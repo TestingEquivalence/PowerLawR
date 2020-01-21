@@ -47,5 +47,5 @@ write.table(t(size), "size.txt")
 
 p=list2freq(citySize,kmin,kmax,scale)
 p=p/sum(p)
-pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,p=)
+pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 3)
 write.table(pw, "power.txt")
