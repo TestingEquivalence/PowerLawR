@@ -36,14 +36,16 @@ write.table(result$sample_size,paste("sample_size_",scale,".txt"))
 alpha=0.05
 kmin=20e3
 kmax=10e6
-scale=10e3
+scale=1e3
 beta=2
 nSamples=1000
 n=662
 eps=0.1
 
-size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha)
-write.table(t(size), "size.txt")
+for (beta in c(1.8, 1.9, 2, 2.1, 2.2)) {
+  size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha)
+  write.table(t(size), paste("size",beta,".txt"))
+}
 
 p=list2freq(citySize,kmin,kmax,scale)
 p=p/sum(p)
