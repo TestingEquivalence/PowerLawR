@@ -23,7 +23,7 @@ uniformRandomStress<-function(kmin,kmax,beta,eps){
       res=nearestPowerLaw(cumsum(lp),kmin,kmax,1,3)
       if (res$minimum>beta*0.8)
         if (res$minimum<beta*1.2)
-          return(v)
+          return(lp)
     }
       
   }
