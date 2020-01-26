@@ -37,12 +37,11 @@ alpha=0.05
 kmin=20e3
 kmax=10e6
 scale=10e3
-beta=2
+beta=2.3
 nSamples=1000
 n=662
-eps=0.1
+eps=0.08
 
-#c(2, 2.1, 2.2, 2.3, 2.4)
 for (beta in c(2, 2.1, 2.2, 2.3, 2.4)) {
   size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha)
   write.table(t(size), paste("size",beta,".txt"))
@@ -50,5 +49,12 @@ for (beta in c(2, 2.1, 2.2, 2.3, 2.4)) {
 
 p=list2freq(citySize,kmin,kmax,scale)
 p=p/sum(p)
-pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 3)
-write.table(pw, "power.txt")
+
+pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,p=p)
+write.table(pw, "power1.txt")
+
+pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,p=p)
+write.table(pw, "power2.txt")
+
+pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 3,p=p)
+write.table(pw, "power3.txt")
