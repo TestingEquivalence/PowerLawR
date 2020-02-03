@@ -1,6 +1,7 @@
 
 
-sizeAtPowerLaw<-function(n,kmin,kmax,scale, beta,  nSamples, alpha){
+sizeAtPowerLaw<-function(n,kmin,kmax,scale, beta,  nSamples, 
+                         alpha, bootstrap=FALSE, nSimulation=0){
   kmin=kmin/scale
   kmax=kmax/scale
   

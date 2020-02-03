@@ -23,7 +23,22 @@ asympt_stdev<-function(p,derivative){
   return (sqrt(vnsq))
 }
 
-
+bootstrap_stdev<-function(p,n,nSimulation,kmin,kmax){
+  set.seed(30062020)
+  
+  i=c(1:nSimulation)
+  f<-function(k){
+    v=rmultinom(n=1,size=n,prob=p)
+    v=v/sum(v)
+    cdf=cumsum(v)
+    res = nearestPowerLaw(cdf,kmin,kmax,1,3)
+    distance=res$objective
+    return(distance*distance)
+  }
+  
+  sample=sapply(i,f)
+  return(sqrt(var(sample)))
+}
 
 asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
 {
@@ -41,7 +56,7 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
   
   drv=derivative(cdf,pLawCDF)
   vol=asympt_stdev(frequency,drv)
-  vol=vol/ sqrt(n);
+  vol=vol/ sqrt(n)
   
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
@@ -52,16 +67,49 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
   return(vec)
 }
 
-fmultiple<-function(row, kmins, kmaxs, alpha, scale, counting){
+bootstrap_test<-function(alpha, frequency, kmin, kmax, scale,nSimulation)
+{
+  #calcualte cdf
+  n=sum(frequency)
+  p=frequency/n
+  cdf=cumsum(p)
+  kmin=kmin/scale
+  kmax=kmax/scale
+  
+  res = nearestPowerLaw(cdf,kmin,kmax,1,3)
+  beta=res$minimum
+  distance=res$objective
+  
+  vol=bootstrap_stdev(p,n,nSimulation,kmin,kmax)
+  
+  qt=qnorm(1-alpha,0,1)
+  min_eps = distance*distance + qt*vol
+  min_eps=sqrt(min_eps)
+  
+  vec=c(min_eps,distance,beta,n)
+  names(vec)=c("min_eps","distance","beta","sample_size")
+  return(vec)
+}
+
+
+fmultiple<-function(row, kmins, kmaxs, alpha, scale, counting,bootstrap, nSimulation){
   kmin=kmins[row[1]]
   kmax=kmaxs[row[2]]
   frequency=list2freq(counting,kmin,kmax,scale)
-  res=asymptotic_test(alpha,frequency,kmin,kmax,scale)
+  
+  if (bootstrap){
+    res=bootstrap_test(alpha,frequency,kmin,kmax,scale,nSimulation)
+  }
+  else {
+    res=asymptotic_test(alpha,frequency,kmin,kmax,scale)
+  }
+  
   print(paste("done: ","kmin=",kmin," kmax=", kmax))
   return(c(row[1],row[2],res))
 }
 
-multiple_asymptotic_test <- function(alpha, counting, kmins, kmaxs,scale) {
+multiple_test <- function(alpha, counting, kmins, kmaxs,
+                                     scale,bootstrap=FALSE, nSimulation=0) {
   nrow=length(kmins)
   ncol = length(kmaxs)
   min_eps=matrix(data=NA,nrow,ncol)
@@ -89,7 +137,8 @@ multiple_asymptotic_test <- function(alpha, counting, kmins, kmaxs,scale) {
   
   cl=getCluster()
   clusterExport(cl,c("fmultiple"))
-  ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale, counting)
+  ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
+              counting, bootstrap,nSimulation)
   stopCluster(cl)
   
   for (rn in c(1:ncol(ls))){

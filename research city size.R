@@ -1,5 +1,5 @@
 source("PowerLaw.R")
-source("asymptotic_test.R")
+source("tests.R")
 source("power.R")
 source("read_data.R")
 source("simulation.R")
@@ -16,14 +16,15 @@ kmaxs=c(max(citySize),5e6,10e6,20e6)
 
 #scale for the populatuion measurement
 #it is necessary for the computational feasibility.
-scale=100
+scale=10e3
 #significance level
 alpha=0.05
 
 #carry out multiple asymptotic tests for the power law
 #an asymptotic test is computed for each combination of k_min and k_max 
 #use all but one CPU cores
-result=multiple_asymptotic_test(alpha,citySize,kmins,kmaxs, scale)
+result=multiple_test(alpha,citySize,kmins,kmaxs, scale, bootstrap = TRUE,
+                     nSimulation = 1000)
 
 #write test results
 write.table(result$beta,paste("beta_",scale,".txt"))
