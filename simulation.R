@@ -13,29 +13,42 @@ getCluster<-function(){
   return(cl)
 }
 
-fullToss<-function(i,p, n, kmin, kmax,scale, alpha){
+fullToss<-function(i,p, n, kmin, kmax,scale, alpha,bootstrap, nSimulation){
   set.seed(i)
   counting=rmultinom(n=1,size=n,prob=p)
-  res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+  if (bootstrap){
+    res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation)
+  }
+  else {
+    res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+  }
   return(res)
 }
 
-toss<-function(i,p, n, kmin, kmax,scale, eps,alpha){
+toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation){
   counting=rmultinom(n=1,size=n,prob=p)
-  res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+  if (bootstrap){
+    res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation)
+  }
+  else {
+    res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+  }
   return(res[1]<=eps)
 }
 
-powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps,alpha){
+powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps,alpha,
+                       bootstrap, nSimulation){
   set.seed(01082019)
   i=c(1:nSamples)
-  v=sapply(i, toss,p,n,kmin,kmax,scale,eps,alpha)
+  v=sapply(i, toss,p,n,kmin,kmax,scale,eps,alpha, bootstrap, nSimulation)
   return(sum(v==TRUE)/nSamples)
 }
 
-powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps,alpha){
+powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps,alpha,
+                        bootstrap, nSimulation){
   cl=getCluster()
-  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,scale,eps,alpha)
+  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,
+              scale,eps,alpha, bootstrap, nSimulation)
   stopCluster(cl)
   return(v)
 }

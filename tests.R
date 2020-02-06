@@ -24,7 +24,6 @@ asympt_stdev<-function(p,derivative){
 }
 
 bootstrap_stdev<-function(p,n,nSimulation,kmin,kmax){
-  set.seed(30062020)
   
   i=c(1:nSimulation)
   f<-function(k){
@@ -98,6 +97,7 @@ fmultiple<-function(row, kmins, kmaxs, alpha, scale, counting,bootstrap, nSimula
   frequency=list2freq(counting,kmin,kmax,scale)
   
   if (bootstrap){
+    set.seed(30062020)
     res=bootstrap_test(alpha,frequency,kmin,kmax,scale,nSimulation)
   }
   else {
