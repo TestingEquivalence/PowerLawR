@@ -24,7 +24,7 @@ alpha=0.05
 #an asymptotic test is computed for each combination of k_min and k_max 
 #use all but one CPU cores
 result=multiple_test(alpha,citySize,kmins,kmaxs, scale, bootstrap = TRUE,
-                     nSimulation = 1000)
+                     nSimulation = 1000, bType=2)
 
 #write test results
 write.table(result$beta,paste("beta_",scale,".txt"))

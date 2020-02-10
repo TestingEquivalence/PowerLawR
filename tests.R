@@ -66,7 +66,8 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
   return(vec)
 }
 
-bootstrap_test<-function(alpha, frequency, kmin, kmax, scale,nSimulation)
+bootstrap_test<-function(alpha, frequency, kmin, kmax,
+                         scale,nSimulation, bType=1)
 {
   #calcualte cdf
   n=sum(frequency)
@@ -79,9 +80,14 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax, scale,nSimulation)
   beta=res$minimum
   distance=res$objective
   
-  q=powerLawDensity(beta,kmin,kmax)
+  if (bType==1){
+    q=p
+  }
+  else if (bType==2){
+    q=powerLawDensity(beta,kmin,kmax)
+  }
+
   vol=bootstrap_stdev(q,n,nSimulation,kmin,kmax)
-  
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
   min_eps=sqrt(min_eps)
@@ -92,14 +98,15 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax, scale,nSimulation)
 }
 
 
-fmultiple<-function(row, kmins, kmaxs, alpha, scale, counting,bootstrap, nSimulation){
+fmultiple<-function(row, kmins, kmaxs, alpha, scale, 
+                    counting,bootstrap, nSimulation, bType){
   kmin=kmins[row[1]]
   kmax=kmaxs[row[2]]
   frequency=list2freq(counting,kmin,kmax,scale)
   
   if (bootstrap){
     set.seed(30062020)
-    res=bootstrap_test(alpha,frequency,kmin,kmax,scale,nSimulation)
+    res=bootstrap_test(alpha,frequency,kmin,kmax,scale,nSimulation, bType)
   }
   else {
     res=asymptotic_test(alpha,frequency,kmin,kmax,scale)
@@ -110,7 +117,7 @@ fmultiple<-function(row, kmins, kmaxs, alpha, scale, counting,bootstrap, nSimula
 }
 
 multiple_test <- function(alpha, counting, kmins, kmaxs,
-                                     scale,bootstrap=FALSE, nSimulation=0) {
+                          scale,bootstrap=FALSE, nSimulation=0, bType=1) {
   nrow=length(kmins)
   ncol = length(kmaxs)
   min_eps=matrix(data=NA,nrow,ncol)
@@ -139,7 +146,7 @@ multiple_test <- function(alpha, counting, kmins, kmaxs,
   cl=getCluster()
   clusterExport(cl,c("fmultiple"))
   ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
-              counting, bootstrap,nSimulation)
+              counting, bootstrap,nSimulation, bType)
   stopCluster(cl)
   
   for (rn in c(1:ncol(ls))){
