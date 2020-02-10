@@ -40,7 +40,6 @@ kmax=10e6
 scale=10e3
 nSamples=1000
 n=662
-eps=0.08
 
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
   size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha,
@@ -49,11 +48,13 @@ for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
 }
 
 beta=2.3
+eps=0.12
+
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,
-                 bootstrap = TRUE, nSimulation = 1000)
+                 bootstrap = FALSE, nSimulation = 1000)
 write.table(pw, "powerLawStress.txt")
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,
-                 bootstrap = FALSE, nSimulation = 0)
+                 bootstrap = FALSE, nSimulation = 1000)
 write.table(pw, "uniformRandomStress.txt")
-
+ 

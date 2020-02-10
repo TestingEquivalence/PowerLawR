@@ -79,7 +79,8 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax, scale,nSimulation)
   beta=res$minimum
   distance=res$objective
   
-  vol=bootstrap_stdev(p,n,nSimulation,kmin,kmax)
+  q=powerLawDensity(beta,kmin,kmax)
+  vol=bootstrap_stdev(q,n,nSimulation,kmin,kmax)
   
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
