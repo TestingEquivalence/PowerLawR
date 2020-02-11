@@ -67,7 +67,7 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
 }
 
 bootstrap_test<-function(alpha, frequency, kmin, kmax,
-                         scale,nSimulation, bType=1)
+                         scale,nSimulation, bType)
 {
   #calcualte cdf
   n=sum(frequency)

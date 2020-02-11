@@ -59,7 +59,7 @@ powerLawStress<-function(n,eps,kmin,kmax,beta){
 
 
 boundaryPower<-function(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType,
-                        bootstrap, nSimulation){
+                        bootstrap, nSimulation, bType){
   
   
   kmin=kmin/scale
@@ -83,7 +83,7 @@ boundaryPower<-function(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType,
   rndBndPoints=lapply(i, f)
   
   res=powerAtPoints(rndBndPoints,n,nSamples = 1000,
-                    kmin,kmax,1,eps,alpha, bootstrap, nSimulation)
+                    kmin,kmax,1,eps,alpha, bootstrap, nSimulation, bType)
   return(res)
 }
 
