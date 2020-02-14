@@ -67,7 +67,7 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
 }
 
 bootstrap_test<-function(alpha, frequency, kmin, kmax,
-                         scale,nSimulation, bType)
+                         scale,nSimulation)
 {
   #calcualte cdf
   n=sum(frequency)
@@ -80,14 +80,7 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax,
   beta=res$minimum
   distance=res$objective
   
-  if (bType==1){
-    q=p
-  }
-  else if (bType==2){
-    q=powerLawDensity(beta,kmin,kmax)
-  }
-
-  vol=bootstrap_stdev(q,n,nSimulation,kmin,kmax)
+  vol=bootstrap_stdev(p,n,nSimulation,kmin,kmax)
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
   min_eps=sqrt(min_eps)
@@ -99,14 +92,14 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax,
 
 
 fmultiple<-function(row, kmins, kmaxs, alpha, scale, 
-                    counting,bootstrap, nSimulation, bType){
+                    counting,bootstrap, nSimulation){
   kmin=kmins[row[1]]
   kmax=kmaxs[row[2]]
   frequency=list2freq(counting,kmin,kmax,scale)
   
   if (bootstrap){
     set.seed(30062020)
-    res=bootstrap_test(alpha,frequency,kmin,kmax,scale,nSimulation, bType)
+    res=bootstrap_test(alpha,frequency,kmin,kmax,scale,nSimulation)
   }
   else {
     res=asymptotic_test(alpha,frequency,kmin,kmax,scale)
@@ -117,7 +110,7 @@ fmultiple<-function(row, kmins, kmaxs, alpha, scale,
 }
 
 multiple_test <- function(alpha, counting, kmins, kmaxs,
-                          scale,bootstrap=FALSE, nSimulation=0, bType=1) {
+                          scale,bootstrap=FALSE, nSimulation=0) {
   nrow=length(kmins)
   ncol = length(kmaxs)
   min_eps=matrix(data=NA,nrow,ncol)
@@ -146,7 +139,7 @@ multiple_test <- function(alpha, counting, kmins, kmaxs,
   cl=getCluster()
   clusterExport(cl,c("fmultiple"))
   ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
-              counting, bootstrap,nSimulation, bType)
+              counting, bootstrap,nSimulation)
   stopCluster(cl)
   
   for (rn in c(1:ncol(ls))){

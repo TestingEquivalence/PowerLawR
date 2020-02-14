@@ -16,15 +16,14 @@ kmaxs=c(max(citySize),5e6,10e6,20e6)
 
 #scale for the populatuion measurement
 #it is necessary for the computational feasibility.
-scale=10e3
+scale=1e3
 #significance level
 alpha=0.05
 
 #carry out multiple asymptotic tests for the power law
 #an asymptotic test is computed for each combination of k_min and k_max 
 #use all but one CPU cores
-result=multiple_test(alpha,citySize,kmins,kmaxs, scale, bootstrap = TRUE,
-                     nSimulation = 1000, bType=2)
+result=multiple_test(alpha,citySize,kmins,kmaxs, scale, bootstrap = TRUE, nSimulation = 1000)
 
 #write test results
 write.table(result$beta,paste("beta_",scale,".txt"))
@@ -37,13 +36,13 @@ write.table(result$sample_size,paste("sample_size_",scale,".txt"))
 alpha=0.05
 kmin=20e3
 kmax=10e6
-scale=10e3
+scale=1e3
 nSamples=1000
 n=662
 
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
   size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha,
-                      bootstrap = TRUE, nSimulation = 1000, bType=2)
+                      bootstrap = FALSE, nSimulation = 1000)
   write.table(t(size), paste("size",beta,".txt"))
 }
 
@@ -51,10 +50,10 @@ beta=2.3
 eps=0.12
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,
-                 bootstrap = TRUE, nSimulation = 1000)
-write.table(pw, "powerLawStress.txt", bType=2)
+                 bootstrap = FALSE, nSimulation = 1000)
+write.table(pw, "powerLawStress.txt")
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,
-                 bootstrap = TRUE, nSimulation = 1000, bType = 2)
+                 bootstrap = FALSE, nSimulation = 1000)
 write.table(pw, "uniformRandomStress.txt")
  

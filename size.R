@@ -1,7 +1,7 @@
 
 
 sizeAtPowerLaw<-function(n,kmin,kmax,scale, beta,  nSamples, 
-                         alpha, bootstrap=FALSE, nSimulation=0, bType=1){
+                         alpha, bootstrap=FALSE, nSimulation=0){
   kmin=kmin/scale
   kmax=kmax/scale
   
@@ -11,7 +11,7 @@ sizeAtPowerLaw<-function(n,kmin,kmax,scale, beta,  nSamples,
   #simulate tests
   i=c(1:nSamples)
   cl=getCluster()
-  v=parSapply(cl,i, fullToss,p,n,kmin,kmax,scale=1,alpha, bootstrap, nSimulation, bType)
+  v=parSapply(cl,i, fullToss,p,n,kmin,kmax,scale=1,alpha, bootstrap, nSimulation)
   stopCluster(cl)
   return(v)
 }
