@@ -23,14 +23,14 @@ asympt_stdev<-function(p,derivative){
   return (sqrt(vnsq))
 }
 
-bootstrap_stdev<-function(p,n,nSimulation,kmin,kmax){
+bootstrap_stdev<-function(p,n,nSimulation,kmin,kmax, tol){
   
   i=c(1:nSimulation)
   f<-function(k){
     v=rmultinom(n=1,size=n,prob=p)
     v=v/sum(v)
     cdf=cumsum(v)
-    res = nearestPowerLaw(cdf,kmin,kmax,1,3)
+    res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol=tol)
     distance=res$objective
     return(distance*distance)
   }
@@ -67,7 +67,7 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
 }
 
 bootstrap_test<-function(alpha, frequency, kmin, kmax,
-                         scale,nSimulation)
+                         scale,nSimulation, tol=NA)
 {
   #calcualte cdf
   n=sum(frequency)
@@ -80,7 +80,7 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax,
   beta=res$minimum
   distance=res$objective
   
-  vol=bootstrap_stdev(p,n,nSimulation,kmin,kmax)
+  vol=bootstrap_stdev(p,n,nSimulation,kmin,kmax,tol)
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
   min_eps=sqrt(min_eps)

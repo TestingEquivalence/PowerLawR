@@ -13,11 +13,11 @@ getCluster<-function(){
   return(cl)
 }
 
-fullToss<-function(i,p, n, kmin, kmax,scale, alpha,bootstrap, nSimulation){
+fullToss<-function(i,p, n, kmin, kmax,scale, alpha,bootstrap, nSimulation,tol){
   set.seed(i)
   counting=rmultinom(n=1,size=n,prob=p)
   if (bootstrap){
-    res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation)
+    res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation,tol)
   }
   else {
     res=asymptotic_test(alpha,counting,kmin,kmax,scale)
@@ -25,10 +25,10 @@ fullToss<-function(i,p, n, kmin, kmax,scale, alpha,bootstrap, nSimulation){
   return(res)
 }
 
-toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation){
+toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation,tol){
   counting=rmultinom(n=1,size=n,prob=p)
   if (bootstrap){
-    res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation)
+    res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation,tol)
   }
   else {
     res=asymptotic_test(alpha,counting,kmin,kmax,scale)
@@ -37,18 +37,20 @@ toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation){
 }
 
 powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps,alpha,
-                       bootstrap, nSimulation, bType){
+                       bootstrap, nSimulation, tol){
   set.seed(01082019)
   i=c(1:nSamples)
-  v=sapply(i, toss,p,n,kmin,kmax,scale,eps,alpha, bootstrap, nSimulation)
+  v=sapply(i, toss,p,n,kmin,kmax,scale,eps,alpha, bootstrap, nSimulation, tol)
   return(sum(v==TRUE)/nSamples)
 }
 
 powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps,alpha,
-                        bootstrap, nSimulation, bType){
+                        bootstrap, nSimulation,tol){
   cl=getCluster()
-  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,
-              scale,eps,alpha, bootstrap, nSimulation)
+  # v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,
+  #             scale,eps,alpha, bootstrap, nSimulation,tol)
+  v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,
+              scale,eps,alpha, bootstrap, nSimulation,tol)
   stopCluster(cl)
   return(v)
 }

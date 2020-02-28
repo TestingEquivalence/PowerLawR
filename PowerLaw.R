@@ -17,12 +17,18 @@ l2<-function(F1,F2){
   return(sqrt(sum(v)))
 }
 
-nearestPowerLaw<-function(CDF, kmin,kmax,betaLower, betaUpper){
+nearestPowerLaw<-function(CDF, kmin,kmax,betaLower, betaUpper, tol=NA){
   f<-function(beta){
     F1=powerLawCDF(beta,kmin,kmax)
     return(l2(F1,CDF))
   }
   
-  res=optimize(f,c(betaLower,betaUpper),lower=betaLower,upper = betaUpper)
+  if (is.na(tol)){
+    res=optimize(f,c(betaLower,betaUpper),lower=betaLower,upper = betaUpper)
+  }
+  else{
+    res=optimize(f,c(betaLower,betaUpper),lower=betaLower,upper = betaUpper, tol=tol)
+  }
+    
   return(res)
 }
