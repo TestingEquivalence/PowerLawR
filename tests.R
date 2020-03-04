@@ -66,7 +66,7 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
   return(vec)
 }
 
-bootstrap_test<-function(alpha, frequency, kmin, kmax,
+bootstrap_test2<-function(alpha, frequency, kmin, kmax,
                          scale,nSimulation, tol=NA)
 {
   #calcualte cdf
@@ -90,6 +90,40 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax,
   return(vec)
 }
 
+bootstrap_test<-function(alpha, frequency, kmin, kmax,
+                         scale,nSimulation, tol=NA)
+{
+  #calcualte cdf
+  n=sum(frequency)
+  p=frequency/n
+  cdf=cumsum(p)
+  kmin=kmin/scale
+  kmax=kmax/scale
+  
+  #calculate  distance
+  res = nearestPowerLaw(cdf,kmin,kmax,1,3)
+  beta=res$minimum
+  distance=res$objective
+  
+  #compute bootstrap distribution
+  i=c(1:nSimulation)
+  f<-function(k){
+    v=rmultinom(n=1,size=n,prob=p)
+    v=v/sum(v)
+    cdf=cumsum(v)
+    res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol=tol)
+    return(res$objective)
+  }
+  
+  sample=sapply(i,f)
+  qt=quantile(sample, probs = c(alpha))
+  mu=mean(sample)
+  min_eps=distance+distance-qt
+  
+  vec=c(min_eps,distance,beta,n)
+  names(vec)=c("min_eps","distance","beta","sample_size")
+  return(vec)
+}
 
 fmultiple<-function(row, kmins, kmaxs, alpha, scale, 
                     counting,bootstrap, nSimulation){
@@ -136,11 +170,14 @@ multiple_test <- function(alpha, counting, kmins, kmaxs,
   grd=expand.grid(i,j)
   colnames(grd)=c("i","j")
   
-  cl=getCluster()
-  clusterExport(cl,c("fmultiple"))
-  ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
+  # cl=getCluster()
+  # clusterExport(cl,c("fmultiple"))
+  # ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
+  #             counting, bootstrap,nSimulation)
+  # stopCluster(cl)
+  
+  ls=apply(grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
               counting, bootstrap,nSimulation)
-  stopCluster(cl)
   
   for (rn in c(1:ncol(ls))){
     r=ls[,rn]

@@ -9,14 +9,14 @@ source("size.R")
 words=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\WordCounts\\words.csv")
 
 #different k_min values
-kmins=c(200,300,500,700,1000)
+kmins=c(500,600,700,800,1000)
 
 #different k_max values, first value coincides with largest city
 kmaxs=c(max(words),2e6,5e6,10e6)
 
 #scale for the populatuion measurement
 #it is necessary for the computational feasibility.
-scale=10
+scale=100
 #significance level
 alpha=0.05
 
@@ -31,22 +31,21 @@ write.table(result$distance,paste("distance_",scale,".txt"))
 write.table(result$min_eps,paste("min_eps_",scale,".txt"))
 write.table(result$sample_size,paste("sample_size_",scale,".txt"))
 
-
 #compute test power at the power law points
 alpha=0.05
-kmin=20e3
-kmax=10e6
-scale=1e3
+kmin=600
+kmax=5e6
+scale=100
 nSamples=1000
-n=662
+n=3282
 
-for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
+for (beta in c(1.9, 1.95, 2, 2.05, 2.1)) {
   size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha,
                       bootstrap = FALSE, nSimulation = 1000)
   write.table(t(size), paste("size",beta,".txt"))
 }
 
-beta=2.3
+beta=2
 eps=0.12
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,
