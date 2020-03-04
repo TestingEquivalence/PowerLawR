@@ -47,10 +47,10 @@ powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps,alpha,
 powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps,alpha,
                         bootstrap, nSimulation,tol){
   cl=getCluster()
-  # v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,
-  #             scale,eps,alpha, bootstrap, nSimulation,tol)
-  v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,
+  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,
               scale,eps,alpha, bootstrap, nSimulation,tol)
+  # v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,
+  #             scale,eps,alpha, bootstrap, nSimulation,tol)
   stopCluster(cl)
   return(v)
 }
