@@ -118,7 +118,7 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax,
   sample=sapply(i,f)
   qt=quantile(sample, probs = c(alpha))
   mu=mean(sample)
-  min_eps=distance+distance-qt
+  min_eps=distance+mu-qt
   
   vec=c(min_eps,distance,beta,n)
   names(vec)=c("min_eps","distance","beta","sample_size")
@@ -170,15 +170,15 @@ multiple_test <- function(alpha, counting, kmins, kmaxs,
   grd=expand.grid(i,j)
   colnames(grd)=c("i","j")
   
-  # cl=getCluster()
-  # clusterExport(cl,c("fmultiple"))
-  # ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
-  #             counting, bootstrap,nSimulation)
-  # stopCluster(cl)
-  
-  ls=apply(grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
+  cl=getCluster()
+  clusterExport(cl,c("fmultiple"))
+  ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale,
               counting, bootstrap,nSimulation)
+  stopCluster(cl)
   
+  # ls=apply(grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
+  #             counting, bootstrap,nSimulation)
+ 
   for (rn in c(1:ncol(ls))){
     r=ls[,rn]
     i=r[1]
@@ -190,5 +190,35 @@ multiple_test <- function(alpha, counting, kmins, kmaxs,
   }
 
   ls=list(min_eps=min_eps,distance=distance,beta=beta, sample_size=sample_size)
+  return(ls)
+}
+multiple_MLE <- function(alpha, counting, kmins, kmaxs,scale) {
+  nrow=length(kmins)
+  ncol = length(kmaxs)
+  beta=matrix(data=NA,nrow,ncol)
+  sample_size=matrix(data=NA,nrow,ncol)
+  rownames(beta)=kmins
+  rownames(sample_size)=kmins
+  colnames(beta)=kmaxs
+  colnames(sample_size)=kmaxs
+  
+  
+  i=c(1:nrow)
+  j=c(1:ncol)
+  grd=expand.grid(i,j)
+  colnames(grd)=c("i","j")
+  
+  for (i in c(1:nrow)){
+    for (j in c(1:ncol)){
+      kmin=kmins[i]
+      kmax=kmaxs[j]
+      frq=list2freq(counting,kmin,kmax,scale)
+      sample_size[i,j]=sum(frq)
+      res=powerLawMLE(frq,kmin/scale,kmax/scale,1,3)
+      beta[i,j]=res$minimum
+    }
+  }
+  
+  ls=list(beta=beta, sample_size=sample_size)
   return(ls)
 }

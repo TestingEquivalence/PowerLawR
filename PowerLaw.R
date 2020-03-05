@@ -32,3 +32,23 @@ nearestPowerLaw<-function(CDF, kmin,kmax,betaLower, betaUpper, tol=NA){
     
   return(res)
 }
+
+powerLawLikelihood<-function(beta, kmin, kmax,frequency){
+  dens=powerLawDensity(beta,kmin,kmax)
+  dens=log(dens)
+  return(sum(dens*frequency))
+}
+
+powerLawMLE<-function(frequency, kmin,kmax,betaLower, betaUpper, tol=NA){
+  f<-function(beta){
+    -powerLawLikelihood(beta, kmin, kmax,frequency)
+  }
+  
+  if (is.na(tol)){
+    res=optimize(f,c(betaLower,betaUpper),lower=betaLower,upper = betaUpper)
+  }
+  else{
+    res=optimize(f,c(betaLower,betaUpper),lower=betaLower,upper = betaUpper, tol=tol)
+  }
+  return(res)
+}

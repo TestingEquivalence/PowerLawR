@@ -33,6 +33,8 @@ write.table(result$distance,paste("distance_",scale,".txt"))
 write.table(result$min_eps,paste("min_eps_",scale,".txt"))
 write.table(result$sample_size,paste("sample_size_",scale,".txt"))
 
+#MLE Estimator of beta
+result=multiple_MLE(alpha,citySize,kmins,kmaxs,scale)
 
 #compute test power at the power law points
 alpha=0.05

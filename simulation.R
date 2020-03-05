@@ -8,7 +8,7 @@ getCluster<-function(){
   cl <- makeCluster(no_cores,'SOCK')
   clusterExport(cl,c("powerLawDensity","powerLawCDF","l2","nearestPowerLaw","derivative",
                      "asympt_stdev","asymptotic_test","bootstrap_stdev","bootstrap_test",
-                     "list2freq","fullToss","toss"))
+                     "list2freq","fullToss","toss","powerLawMLE","MLEToss"))
   
   return(cl)
 }
@@ -54,4 +54,9 @@ powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps,alpha,
   stopCluster(cl)
   return(v)
 }
- 
+MLEToss<-function(i,p, n, kmin, kmax){
+  set.seed(i)
+  counting=rmultinom(n=1,size=n,prob=p)
+  res=powerLawMLE(frq,kmin,kmax,1,3)
+  return(res$minimum)
+} 
