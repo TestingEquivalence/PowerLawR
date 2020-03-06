@@ -16,7 +16,7 @@ kmaxs=c(max(citySize),5e6,10e6,20e6)
 
 #scale for the populatuion measurement
 #it is necessary for the computational feasibility.
-scale=10e3
+scale=100
 #significance level
 alpha=0.05
 
@@ -43,7 +43,7 @@ write.table(result$sample_size,paste("MLE_sample_size_",scale,".txt"))
 alpha=0.05
 kmin=20e3
 kmax=10e6
-scale=10e3
+scale=1e3
 nSamples=1000
 n=662
 
