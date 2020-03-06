@@ -66,7 +66,7 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
   return(vec)
 }
 
-bootstrap_test2<-function(alpha, frequency, kmin, kmax,
+bootstrap_test<-function(alpha, frequency, kmin, kmax,
                          scale,nSimulation, tol=NA)
 {
   #calcualte cdf
@@ -84,41 +84,6 @@ bootstrap_test2<-function(alpha, frequency, kmin, kmax,
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
   min_eps=sqrt(min_eps)
-  
-  vec=c(min_eps,distance,beta,n)
-  names(vec)=c("min_eps","distance","beta","sample_size")
-  return(vec)
-}
-
-bootstrap_test<-function(alpha, frequency, kmin, kmax,
-                         scale,nSimulation, tol=NA)
-{
-  #calcualte cdf
-  n=sum(frequency)
-  p=frequency/n
-  cdf=cumsum(p)
-  kmin=kmin/scale
-  kmax=kmax/scale
-  
-  #calculate  distance
-  res = nearestPowerLaw(cdf,kmin,kmax,1,3)
-  beta=res$minimum
-  distance=res$objective
-  
-  #compute bootstrap distribution
-  i=c(1:nSimulation)
-  f<-function(k){
-    v=rmultinom(n=1,size=n,prob=p)
-    v=v/sum(v)
-    cdf=cumsum(v)
-    res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol=tol)
-    return(res$objective)
-  }
-  
-  sample=sapply(i,f)
-  qt=quantile(sample, probs = c(alpha))
-  mu=mean(sample)
-  min_eps=distance+mu-qt
   
   vec=c(min_eps,distance,beta,n)
   names(vec)=c("min_eps","distance","beta","sample_size")

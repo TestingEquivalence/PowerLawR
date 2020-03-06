@@ -36,6 +36,9 @@ write.table(result$sample_size,paste("sample_size_",scale,".txt"))
 #MLE Estimator of beta
 result=multiple_MLE(alpha,citySize,kmins,kmaxs,scale)
 
+write.table(result$beta,paste("MLE_beta_",scale,".txt"))
+write.table(result$sample_size,paste("MLE_sample_size_",scale,".txt"))
+
 #compute test power at the power law points
 alpha=0.05
 kmin=20e3
@@ -61,3 +64,12 @@ pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,
                  bootstrap = TRUE, nSimulation = 1000,tol=NA)
 write.table(pw, "uniformRandomStress.txt")
  
+#MLE at the power law
+for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
+  size=MLEatPowerLaw(n, kmin,kmax, scale, beta, nSamples)
+  write.table(size, paste("size",beta,".txt"))
+}
+
+
+
+

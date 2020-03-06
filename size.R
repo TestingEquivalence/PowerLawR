@@ -17,8 +17,7 @@ sizeAtPowerLaw<-function(n,kmin,kmax,scale, beta,  nSamples,
   stopCluster(cl)
   return(v)
 }
-MLEatPowerLaw<-function(n,kmin,kmax,scale, beta,  nSamples, 
-                         alpha, bootstrap=FALSE, nSimulation=0, tol=NA){
+MLEatPowerLaw<-function(n,kmin,kmax,scale, beta,  nSamples){
   kmin=kmin/scale
   kmax=kmax/scale
   
