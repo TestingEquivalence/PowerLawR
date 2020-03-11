@@ -10,6 +10,7 @@ words=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\WordCou
 
 #different k_min values
 kmins=c(500,600,700,800,1000)
+#kmins=c(1000,2000,5000, 10000)
 
 #different k_max values, first value coincides with largest city
 kmaxs=c(max(words),2e6,5e6,10e6)
@@ -23,7 +24,7 @@ alpha=0.05
 #carry out multiple asymptotic tests for the power law
 #an asymptotic test is computed for each combination of k_min and k_max 
 #use all but one CPU cores
-result=multiple_test(alpha,words,kmins,kmaxs, scale, bootstrap = FALSE, nSimulation = 1000)
+result=multiple_test(alpha,words,kmins,kmaxs, scale, bootstrap = TRUE, nSimulation = 1000)
 
 #write test results
 write.table(result$beta,paste("beta_",scale,".txt"))
@@ -52,7 +53,7 @@ for (beta in c(1.9, 1.95, 2, 2.05, 2.1)) {
   write.table(t(size), paste("size",beta,".txt"))
 }
 
-beta=2
+ beta=2
 eps=0.12
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,

@@ -49,19 +49,19 @@ n=662
 
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
   size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha,
-                      bootstrap = TRUE, nSimulation = 1000, tol=NA)
+                      bootstrap = FALSE, nSimulation = 1000, tol=0.001)
   write.table(t(size), paste("size",beta,".txt"))
 }
 
 beta=2.3
-eps=0.12
+eps=0.3 #0.3; 0.35; 0.4
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,
-                 bootstrap = TRUE, nSimulation = 1000,tol=NA)
+                 bootstrap = TRUE, nSimulation = 1000,tol=0.001)
 write.table(pw, "powerLawStress.txt")
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,
-                 bootstrap = TRUE, nSimulation = 1000,tol=NA)
+                 bootstrap = TRUE, nSimulation = 1000,tol=0.001)
 write.table(pw, "uniformRandomStress.txt")
  
 #MLE at the power law

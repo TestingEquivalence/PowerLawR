@@ -20,7 +20,7 @@ fullToss<-function(i,p, n, kmin, kmax,scale, alpha,bootstrap, nSimulation,tol){
     res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation,tol)
   }
   else {
-    res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+    res=asymptotic_test(alpha,counting,kmin,kmax,scale,tol)
   }
   return(res)
 }
@@ -31,7 +31,7 @@ toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation,tol){
     res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation,tol)
   }
   else {
-    res=asymptotic_test(alpha,counting,kmin,kmax,scale)
+    res=asymptotic_test(alpha,counting,kmin,kmax,scale,tol)
   }
   return(res[1]<=eps)
 }

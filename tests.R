@@ -39,7 +39,7 @@ bootstrap_stdev<-function(p,n,nSimulation,kmin,kmax, tol){
   return(sqrt(var(sample)))
 }
 
-asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
+asymptotic_test<-function(alpha, frequency, kmin, kmax, scale, tol=NA)
 {
   #calcualte cdf
   n=sum(frequency)
@@ -48,7 +48,7 @@ asymptotic_test<-function(alpha, frequency, kmin, kmax, scale)
   kmin=kmin/scale
   kmax=kmax/scale
   
-  res = nearestPowerLaw(cdf,kmin,kmax,1,3)
+  res = nearestPowerLaw(cdf,kmin,kmax,1,3, tol)
   beta=res$minimum
   distance=res$objective
   pLawCDF=powerLawCDF(beta,kmin,kmax)
@@ -76,7 +76,7 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax,
   kmin=kmin/scale
   kmax=kmax/scale
   
-  res = nearestPowerLaw(cdf,kmin,kmax,1,3)
+  res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol)
   beta=res$minimum
   distance=res$objective
   
