@@ -40,10 +40,10 @@ write.table(result$beta,paste("MLE_beta_",scale,".txt"))
 write.table(result$sample_size,paste("MLE_sample_size_",scale,".txt"))
 
 #compute test power at the power law points
-alpha=0.05
+alpha=0.05/2
 kmin=20e3
 kmax=10e6
-scale=1e3
+scale=10e3
 nSamples=1000
 n=662
 
