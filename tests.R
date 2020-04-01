@@ -31,7 +31,14 @@ bootstrap_stdev<-function(p,n,nSimulation,kmin,kmax, tol){
     v=v/sum(v)
     cdf=cumsum(v)
     res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol=tol)
-    distance=res$objective
+    
+    #variance denominator
+    #variance denominator
+    pLawCDF=powerLawCDF(beta,kmin,kmax)
+    drv=derivative(cdf,pLawCDF) 
+    vol=asympt_stdev(frequency,drv)/sqrt(n)
+    
+    distance=res$objective/vol
     return(distance*distance)
   }
   
@@ -78,7 +85,13 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax,
   
   res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol)
   beta=res$minimum
-  distance=res$objective
+  
+  #variance denominator
+  pLawCDF=powerLawCDF(beta,kmin,kmax)
+  drv=derivative(cdf,pLawCDF) 
+  vol=asympt_stdev(frequency,drv)/sqrt(n)
+  
+  distance=res$objective/vol
   
   vol=bootstrap_stdev(p,n,nSimulation,kmin,kmax,tol)
   qt=qnorm(1-alpha,0,1)

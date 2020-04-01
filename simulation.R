@@ -33,7 +33,7 @@ toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation,tol){
   else {
     res=asymptotic_test(alpha,counting,kmin,kmax,scale,tol)
   }
-  return(res[1]<=eps)
+  return(res[1]<eps)
 }
 
 powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps,alpha,
@@ -41,14 +41,15 @@ powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps,alpha,
   set.seed(01082019)
   i=c(1:nSamples)
   v=sapply(i, toss,p,n,kmin,kmax,scale,eps,alpha, bootstrap, nSimulation, tol)
-  return(sum(v==TRUE)/nSamples)
+  res=sum(v==TRUE)/nSamples
+  return(res)
 }
 
 powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps,alpha,
                         bootstrap, nSimulation,tol){
   cl=getCluster()
   v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,
-              scale,eps,alpha, bootstrap, nSimulation,tol)
+             scale,eps,alpha, bootstrap, nSimulation,tol)
   # v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,
   #             scale,eps,alpha, bootstrap, nSimulation,tol)
   stopCluster(cl)
