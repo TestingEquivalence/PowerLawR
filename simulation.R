@@ -29,11 +29,12 @@ toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation,tol){
   counting=rmultinom(n=1,size=n,prob=p)
   if (bootstrap){
     res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation,tol)
+    return(res[1]<eps)
   }
   else {
     res=asymptotic_test(alpha,counting,kmin,kmax,scale,tol)
+    return(res[1]<eps)
   }
-  return(res[1]<eps)
 }
 
 powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps,alpha,

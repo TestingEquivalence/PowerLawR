@@ -52,7 +52,7 @@ set.seed(01082019)
 
 for (i in c(1:1000)){
   counting=rmultinom(n=1,size=n,prob=p)
-  res=asymptotic_test(alpha,counting,kmin,kmax,scale=1,tol=0.001)
+  res=bootstrap_test(alpha,counting,kmin,kmax,scale=1,tol=0.001)
   v_mineps[i]=res[1]
   v_dst[i]=res[2]
   v_beta[i]=res[3]
