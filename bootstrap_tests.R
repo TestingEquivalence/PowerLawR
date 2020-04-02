@@ -29,7 +29,7 @@ bootstrap_test1<-function(alpha, frequency, kmin, kmax,
   beta=res$minimum
   distance=res$objective
   
-  vol=bootstrap_stdev2(p,n,nSimulation,kmin,kmax,tol)
+  vol=bootstrap_stdev1(p,n,nSimulation,kmin,kmax,tol)
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
   min_eps=sqrt(min_eps)

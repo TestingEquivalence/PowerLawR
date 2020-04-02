@@ -4,6 +4,7 @@ source("power.R")
 source("read_data.R")
 source("simulation.R")
 source("size.R")
+source("bootstrap_tests.R")
 
 #vector of city sizes in Germany
 citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
@@ -54,13 +55,13 @@ for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
 }
 
 beta=2.3
-eps=0.10 
+eps=0.08 
 adjEps=1
 # 0.08; 0.10; 0.12
 #0.3; 0.35; 0.4
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,
-                 bootstrap = FALSE, nSimulation = 1000,tol=0.001, 
+                 bootstrap = TRUE, nSimulation = 1000,tol=0.001, 
                  adjEps=adjEps)
 write.table(pw, "powerLawStress.csv")
 
