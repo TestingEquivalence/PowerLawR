@@ -17,8 +17,8 @@ scale=10e3
 nSamples=1000
 n=662
 beta=2.3
-eps=0.08 
-adjEps=0.9
+eps=0.10
+adjEps=1
 kmin=20e3/scale
 kmax=10e6/scale
 
@@ -34,14 +34,15 @@ for (i in c(1:100)){
   vbeta[[i]]=res$minimum
 }
 
-k=11 #worst case
-k=41 #best case 
+summary(vbeta)
+
+k=46 #worst case
+k=80 #best case 
 pl=powerLawCDF(vbeta[k],kmin,kmax)
 pcdf=cumsum(vpoints[[k]])
 diff=pl-pcdf
 plot(diff)
 
-k=41
 p=vpoints[[k]]
 v_mineps=c(1:1000)
 v_dst=c(1:1000)
