@@ -29,8 +29,6 @@ bootstrap_test1<-function(alpha, frequency, kmin, kmax,
   beta=res$minimum
   distance=res$objective
   
-  #set seed value
-  set.seed(10072020)
   vol=bootstrap_stdev1(p,n,nSimulation,kmin,kmax,tol)
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
