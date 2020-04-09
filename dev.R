@@ -4,13 +4,7 @@ source("power.R")
 source("read_data.R")
 source("simulation.R")
 source("size.R")
-
-powerLawStress2<-function(n,eps,kmin,kmax,beta){
-  p=powerLawDensity(beta,kmin,kmax)
-  q=closeRandomPoint(p,n, eps,beta,kmin,kmax)
-  lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
-  return(lp)
-}
+source("bootstrap_tests.R")
 
 alpha=0.05
 scale=10e3
@@ -28,7 +22,7 @@ vpoints=list()
 
 set.seed(01012020)
 for (i in c(1:100)){
-  point=powerLawStress2(n,eps,kmin,kmax,beta)
+  point=uniformRandomStress(kmin,kmax,beta,eps)
   res=nearestPowerLaw(cumsum(point),kmin,kmax,1,3)
   vpoints[[i]]=point
   vbeta[[i]]=res$minimum
@@ -68,3 +62,17 @@ hist(v_beta)
 
 v=v_mineps<eps
 sum(v==TRUE)/1000
+
+citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
+alpha=0.05
+kmin=20e3
+kmax=10e6
+scale=10e3
+nSamples=1000
+n=662
+eps=0.08
+
+frequency=list2freq(citySize,kmin,kmax,scale)
+set.seed(30062020)
+res=bootstrap_test2(alpha, frequency, kmin, kmax,
+                    scale,nSimulation=1000, tol=0.001, nDirections=200)

@@ -17,7 +17,7 @@ kmaxs=c(max(citySize),5e6,10e6,20e6)
 
 #scale for the populatuion measurement
 #it is necessary for the computational feasibility.
-scale=100
+scale=1000
 #significance level
 alpha=0.05
 
@@ -41,6 +41,7 @@ write.table(result$beta,paste("MLE_beta_",scale,".csv"))
 write.table(result$sample_size,paste("MLE_sample_size_",scale,".csv"))
 
 #compute test power at the power law points
+###########################################
 alpha=0.05
 kmin=20e3
 kmax=10e6
@@ -48,17 +49,25 @@ scale=10e3
 nSamples=1000
 n=662
 
-for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
-  size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples,alpha,
-                      bootstrap = FALSE, nSimulation = 1000, tol=0.001)
-  write.table(t(size), paste("size",beta,".csv"))
+kmin/scale
+kmax/scale
+
+# asymptotic test
+test<-function(counting){
+  asymptotic_test(alpha=0.05,frequency = counting,kmin=2,kmax = 1000,
+                      scale=1, tol=0.001)
 }
 
-beta=2.3
-eps=0.08 
-adjEps=1
-# 0.08; 0.10; 0.12
-#0.3; 0.35; 0.4
+for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
+  size=sizeAtPowerLaw(n,kmin,kmax,beta,nSamples)
+  write.table(size, paste("size",beta,".csv"))
+}
+
+
+# compute test power at boundary points
+###########################################
+
+# asymptotic test 
 
 pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,
                  bootstrap = TRUE, nSimulation = 1000,tol=0.001, 
@@ -71,8 +80,20 @@ write.table(pw, "powerLawStress.csv")
 # write.table(pw, "uniformRandomStress.csv")
  
 #MLE at the power law
+####################################
+kmin=20e3
+kmax=10e6
+scale=10e3
+nSamples=1000
+n=662
+
+test<-function(counting,kmin,kmax, scale){
+  res=powerLawMLE(counting,kmin/scale,kmax/scale,1,3)
+  return(res$minimum)
+}
+
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
-  size=MLEatPowerLaw(n, kmin,kmax, scale, beta, nSamples)
+  size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples)
   write.table(size, paste("size",beta,".csv"))
 }
 

@@ -85,26 +85,39 @@ bootstrap_test2<-function(alpha, frequency, kmin, kmax,
   
   res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol)
   beta=res$minimum
+  distance=res$objective
   
-  #generate exterior points
-  set.seed(03042020)
-  extPoints=list()
+  #generate boundary points
+  bndPoints=list()
   for (i in c(1:nDirections)){
     ep=closeRandomPoint(p,n, eps,beta,kmin,kmax)
-    extPoints=c(extPoints,ep)
+    bndPoints[[i]]=linearBoundaryPoint(p,q=ep,eps,kmin,kmax)
   }
-  
-  #generate linear boundary points
-  bndPoints=lapply(extPoints, linearBoundaryPoint,q=p,eps,kmin,kmax)
   
   #find closes bnd point
   cbndPoints=lapply(bndPoints, cumsum)
   cp=cumsum(p)
-  dst=lapply(bndPoints, l2, F2=cp)
+  dst=lapply(cbndPoints, l2, F2=cp)
   pos=which.min(dst)
   bndPoint=bndPoints[[pos]]
   
-  vec=c(min_eps,distance,beta,n)
-  names(vec)=c("min_eps","distance","beta","sample_size")
-  return(vec)
+  #simulate bootstrap distribution
+  i=c(1:nSimulation)
+  f<-function(k){
+    v=rmultinom(n=1,size=n,prob=p)
+    v=v/sum(v)
+    cdf=cumsum(v)
+    res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol=tol)
+    
+    return(res$objective)
+  }
+  
+  sample=sapply(i,f)
+  
+  p_value=sum(distance>=sample)/nSimulation
+  return(p_value)
+}
+
+bootstrap_test3<-function(){
+  
 }

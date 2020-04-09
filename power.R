@@ -1,5 +1,4 @@
 
-
 uniformRandomStress<-function(kmin,kmax,beta,eps){
   p=powerLawDensity(beta,kmin,kmax)
   repeat{

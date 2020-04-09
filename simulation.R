@@ -8,23 +8,13 @@ getCluster<-function(){
   cl <- makeCluster(no_cores,'SOCK')
   clusterExport(cl,c("powerLawDensity","powerLawCDF","l2","nearestPowerLaw","derivative",
                      "asympt_stdev","asymptotic_test","bootstrap_test",
-                     "list2freq","fullToss","toss","powerLawMLE","MLEToss","powerLawLikelihood",
-                     "bootstrap_stdev1","bootstrap_test1"))
+                     "list2freq","fullToss","toss","powerLawLikelihood",
+                     "bootstrap_stdev1","bootstrap_test1","test","powerLawMLE"))
   
   return(cl)
 }
 
-fullToss<-function(i,p, n, kmin, kmax,scale, alpha,bootstrap, nSimulation,tol){
-  set.seed(i)
-  counting=rmultinom(n=1,size=n,prob=p)
-  if (bootstrap){
-    res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation,tol)
-  }
-  else {
-    res=asymptotic_test(alpha,counting,kmin,kmax,scale,tol)
-  }
-  return(res)
-}
+
 
 toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation,tol){
   counting=rmultinom(n=1,size=n,prob=p)
@@ -57,9 +47,3 @@ powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps,alpha,
   stopCluster(cl)
   return(v)
 }
-MLEToss<-function(i,p, n, kmin, kmax){
-  set.seed(i)
-  frq=rmultinom(n=1,size=n,prob=p)
-  res=powerLawMLE(frq,kmin,kmax,1,3)
-  return(res$minimum)
-} 
