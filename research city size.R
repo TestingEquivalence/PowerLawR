@@ -42,24 +42,20 @@ write.table(result$sample_size,paste("MLE_sample_size_",scale,".csv"))
 
 #compute test power at the power law points
 ###########################################
-alpha=0.05
 kmin=20e3
 kmax=10e6
 scale=10e3
 nSamples=1000
 n=662
 
-kmin/scale
-kmax/scale
 
 # asymptotic test
-test<-function(counting){
-  asymptotic_test(alpha=0.05,frequency = counting,kmin=2,kmax = 1000,
-                      scale=1, tol=0.001)
+test<-function(counting,kmin,kmax, scale){
+  asymptotic_test(alpha=0.05,frequency = counting,kmin,kmax,scale, tol=0.001)
 }
 
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
-  size=sizeAtPowerLaw(n,kmin,kmax,beta,nSamples)
+  size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples)
   write.table(size, paste("size",beta,".csv"))
 }
 

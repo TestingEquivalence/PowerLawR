@@ -7,15 +7,15 @@ fullToss<-function(i,p, n, kmin,kmax, scale){
 
 sizeAtPowerLaw<-function(n,kmin,kmax, scale, beta,nSamples){
   #calculate density of discrete power law
-  p=powerLawDensity(beta,kmin/scale,kmax/scale)
+  p=powerLawDensity(beta,kmin=kmin/scale,kmax=kmax/scale)
   
   #simulate tests
+  #v=sapply(i, fullToss,p,n,kmin,kmax,scale)
   i=c(1:nSamples)
-  #cl=getCluster()
-  #v=parSapply(cl,i, fullToss,p,n)
-  v=sapply(i, fullToss,p,n,kmin,kmax,scale)
+  cl=getCluster()
+  v=parSapply(cl,i, fullToss,p,n,kmin,kmax,scale)
+  stopCluster(cl)
   
-  #stopCluster(cl)
   return(v)
 }
 
