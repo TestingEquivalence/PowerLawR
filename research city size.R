@@ -51,7 +51,8 @@ n=662
 
 # asymptotic test
 test<-function(counting,kmin,kmax, scale){
-  asymptotic_test(alpha=0.05,frequency = counting,kmin,kmax,scale, tol=0.001)
+  asymptotic_test(alpha=0.05,frequency = counting,kmin,kmax,scale, 
+                  tol=0.001)
 }
 
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
@@ -62,12 +63,24 @@ for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
 
 # compute test power at boundary points
 ###########################################
+kmin=20e3
+kmax=10e6
+beta=2.3
+scale=10e3
+nSamples=1000
+n=662
+eps=0.08
+epsAdj=1
 
 # asymptotic test 
 
-pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 1,
-                 bootstrap = TRUE, nSimulation = 1000,tol=0.001, 
-                 adjEps=adjEps)
+test<-function(counting,kmin,kmax,scale,eps){
+  res=asymptotic_test(alpha=0.05,frequency = counting,kmin,kmax,scale, 
+                      tol=0.001)
+  return(res[1]<eps)
+}
+
+pw=boundaryPower(n,eps,kmin,kmax,scale,beta,nSamples, boundaryPointType=1,epsAdj)
 write.table(pw, "powerLawStress.csv")
 
 # pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,

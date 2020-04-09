@@ -8,42 +8,29 @@ getCluster<-function(){
   cl <- makeCluster(no_cores,'SOCK')
   clusterExport(cl,c("powerLawDensity","powerLawCDF","l2","nearestPowerLaw","derivative",
                      "asympt_stdev","asymptotic_test","bootstrap_test",
-                     "list2freq","fullToss","toss","powerLawLikelihood",
+                     "list2freq","fullToss","powerLawLikelihood",
                      "bootstrap_stdev1","bootstrap_test1","test","powerLawMLE"))
   
   return(cl)
 }
 
-
-
-toss<-function(i,p, n, kmin, kmax,scale, eps,alpha, bootstrap, nSimulation,tol){
-  counting=rmultinom(n=1,size=n,prob=p)
-  if (bootstrap){
-    res=bootstrap_test(alpha,counting,kmin,kmax,scale,nSimulation,tol)
-    return(res[1]<eps)
-  }
-  else {
-    res=asymptotic_test(alpha,counting,kmin,kmax,scale,tol)
-    return(res[1]<eps)
-  }
-}
-
-powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale, eps,alpha,
-                       bootstrap, nSimulation, tol){
+powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale,test,eps){
   set.seed(01082019)
-  i=c(1:nSamples)
-  v=sapply(i, toss,p,n,kmin,kmax,scale,eps,alpha, bootstrap, nSimulation, tol)
+  points=list()
+  for (i in c(1:nSamples)){
+    points[[i]]=rmultinom(n=1,size=n,prob=p)  
+  }
+  
+  v=sapply(points, test,kmin,kmax,scale,eps)
   res=sum(v==TRUE)/nSamples
   return(res)
 }
 
-powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale, eps,alpha,
-                        bootstrap, nSimulation,tol){
-  cl=getCluster()
-  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,
-             scale,eps,alpha, bootstrap, nSimulation,tol)
-  # v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,
-  #             scale,eps,alpha, bootstrap, nSimulation,tol)
-  stopCluster(cl)
+powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale,test,eps){
+  #cl=getCluster()
+  #v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,scale,test,eps)
+  #stopCluster(cl)
+  
+  v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,scale,test,eps)
   return(v)
 }
