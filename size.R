@@ -13,6 +13,7 @@ sizeAtPowerLaw<-function(n,kmin,kmax, scale, beta,nSamples){
   #v=sapply(i, fullToss,p,n,kmin,kmax,scale)
   i=c(1:nSamples)
   cl=getCluster()
+  clusterExport(cl,c("test"))
   v=parSapply(cl,i, fullToss,p,n,kmin,kmax,scale)
   stopCluster(cl)
   

@@ -9,7 +9,7 @@ getCluster<-function(){
   clusterExport(cl,c("powerLawDensity","powerLawCDF","l2","nearestPowerLaw","derivative",
                      "asympt_stdev","asymptotic_test","bootstrap_test",
                      "list2freq","fullToss","powerLawLikelihood",
-                     "bootstrap_stdev1","bootstrap_test1","test","powerLawMLE"))
+                     "bootstrap_stdev1","bootstrap_test1","powerLawMLE"))
   
   return(cl)
 }
@@ -28,6 +28,7 @@ powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale,test,eps){
 
 powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale,test,eps){
   cl=getCluster()
+  clusterExport(cl,c("test"))
   v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,scale,test,eps)
   stopCluster(cl)
   

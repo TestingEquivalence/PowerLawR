@@ -69,7 +69,6 @@ beta=2.3
 scale=10e3
 nSamples=1000
 n=662
-eps=0.08
 epsAdj=1
 
 # asymptotic test 
@@ -80,13 +79,15 @@ test<-function(counting,kmin,kmax,scale,eps){
   return(res[1]<eps)
 }
 
-pw=boundaryPower(n,eps,kmin,kmax,scale,beta,nSamples, boundaryPointType=1,epsAdj)
-write.table(pw, "powerLawStress.csv")
+for (eps in c(0.08,0.10,0.12)){
+  pw=boundaryPower(n,eps,kmin,kmax,scale,beta,nSamples, boundaryPointType=1,epsAdj)
+  write.table(pw, paste("powerLawStress",eps*100,".csv"))
+}
 
-# pw=boundaryPower(n,eps,kmin,kmax,scale,beta,alpha, boundaryPointType = 2,
-#                  bootstrap = FALSE, nSimulation = 1000,tol=0.001, 
-#                  adjEps=adjEps)
-# write.table(pw, "uniformRandomStress.csv")
+for (eps in c(0.08,0.10,0.12)){
+  pw=boundaryPower(n,eps,kmin,kmax,scale,beta,nSamples, boundaryPointType=2,epsAdj)
+  write.table(pw, paste("uniformRandomStress",eps*100,".csv"))
+}
  
 #MLE at the power law
 ####################################
