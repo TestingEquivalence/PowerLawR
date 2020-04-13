@@ -2,7 +2,7 @@
 uniformRandomStress<-function(kmin,kmax,beta,eps){
   p=powerLawDensity(beta,kmin,kmax)
   repeat{
-    v=runif(kmax-kmin+1,0.9,1.1)
+    v=runif(kmax-kmin+1)
     v=v*p
     cv=cumsum(v)
     res=nearestPowerLaw(cv,kmin,kmax,1,3)

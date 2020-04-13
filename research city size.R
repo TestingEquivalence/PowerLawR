@@ -55,6 +55,13 @@ test<-function(counting,kmin,kmax, scale){
                   tol=0.001)
 }
 
+#bootstrap test 1
+test<-function(counting,kmin,kmax,scale,eps){
+  res=bootstrap_test1(alpah=0.05,frequency = counting,
+                      kmin,kmax,scale,nSimulation=1000,tol=0.001)
+  return(res[1]<eps)
+}
+
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
   size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples)
   write.table(size, paste("size",beta,".csv"))
@@ -76,6 +83,13 @@ epsAdj=1
 test<-function(counting,kmin,kmax,scale,eps){
   res=asymptotic_test(alpha=0.05,frequency = counting,kmin,kmax,scale, 
                       tol=0.001)
+  return(res[1]<eps)
+}
+
+#bootstrap test 1
+test<-function(counting,kmin,kmax,scale,eps){
+  res=bootstrap_test1(alpah=0.05,frequency = counting,
+                      kmin,kmax,scale,nSimulation=1000,tol=0.001)
   return(res[1]<eps)
 }
 
