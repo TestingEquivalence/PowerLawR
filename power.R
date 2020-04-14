@@ -2,9 +2,10 @@
 uniformRandomStress<-function(kmin,kmax,beta,eps){
   p=powerLawDensity(beta,kmin,kmax)
   repeat{
-    v=runif(kmax-kmin+1)
+    v=runif(length(p))
     v=v*p
-    cv=cumsum(v)
+    v=v/sum(v)
+    cv=cumsum(v) 
     res=nearestPowerLaw(cv,kmin,kmax,1,3)
     if (res$objective>eps){
       lp=linearBoundaryPoint(p,v,eps,kmin,kmax)
