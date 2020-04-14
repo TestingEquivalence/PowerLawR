@@ -1,6 +1,27 @@
- 
-summary(vbeta)
-summary(veps)
+source("PowerLaw.R")
+source("tests.R")
+source("power.R")
+source("read_data.R")
+source("simulation.R")
+source("size.R")
+source("bootstrap_tests.R") 
+
+kmin=20e3
+kmax=10e6
+scale=10e3
+nSamples=1000
+n=662
+beta=2.3
+eps=0.08
+
+set.seed(01012020)
+for (i in c(1:100)){
+  uniformRandomStress(kmin=kmin/scale,kmax=kmax/scale,beta,eps)  
+}
+
+
+
+
 
 k=2
 pl=powerLawCDF(vbeta[k],kmin,kmax)
