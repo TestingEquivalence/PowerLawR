@@ -41,8 +41,8 @@ plot(diff)
 res=nearestPowerLaw(cumsum(vpoint[[k]]),kmin/scale,kmax/scale,2,3,tol=0.001)
 
 
-k=1
-p=vpoint[[1]]
+k=2
+p=vpoint[[k]]
 v_mineps=c(1:1000)
 v_dst=c(1:1000)
 v_beta=c(1:1000)

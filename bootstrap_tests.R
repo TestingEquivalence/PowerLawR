@@ -73,8 +73,8 @@ linearBoundaryPoint<-function(p,q,eps,kmin,kmax){
 }
 
 
-bootstrap_test2<-function(alpha, frequency, kmin, kmax,
-                         scale,nSimulation, tol=NA, nDirections)
+bootstrap_test_base<-function(alpha, frequency, kmin, kmax,
+                         scale,nSimulation, tol, eps, exteriorPoints)
 {
   #calcualte cdf
   n=sum(frequency)
@@ -87,11 +87,16 @@ bootstrap_test2<-function(alpha, frequency, kmin, kmax,
   beta=res$minimum
   distance=res$objective
   
+  if (distance>=eps) {
+    p_value=1
+    return(p_value)
+  }
+  
   #generate boundary points
   bndPoints=list()
-  for (i in c(1:nDirections)){
-    ep=closeRandomPoint(p,n, eps,beta,kmin,kmax)
-    bndPoints[[i]]=linearBoundaryPoint(p,q=ep,eps,kmin,kmax)
+  nDir=length(exteriorPoints)
+  for (i in c(1:nDir)){
+    bndPoints[[i]]=linearBoundaryPoint(p,q=exteriorPoints[[i]],eps,kmin,kmax)
   }
   
   #find closes bnd point
@@ -118,6 +123,34 @@ bootstrap_test2<-function(alpha, frequency, kmin, kmax,
   return(p_value)
 }
 
-bootstrap_test3<-function(){
+bootstrap_test2<-function(alpha, frequency, kmin, kmax, scale,
+                          nSimulation, nDirections, eps, tol){
+  #generate H0 points
+  exteriorPoints=list()
+  for (i in c(1:nDirections)){
+    exteriorPoints[[i]]=closeRandomPoint(p,n, eps,beta,kmin,kmax)
+  }
   
+  res=bootstrap_test_base(alpha,frequency,kmin,kmax,scale,nSimulation,tol,eps,
+                          exteriorPoints)
+  return(res)
+}
+  
+
+bootstrap_test3<-function(alpha, frequency, kmin, kmax,
+                          scale,nSimulation, tol=NA, nDirections,minEps, maxEps){
+  #generate H0 points
+  exteriorPoints=list()
+  for (i in c(1:nDirections)){
+    exteriorPoints[[i]]=closeRandomPoint(p,n, maxEps,beta,kmin,kmax)
+  }
+  
+  f<-function(eps){
+    p_val=bootstrap_test_base(alpha,frequency,kmin,kmax,scale,nSimulation,
+                              tol,eps,exteriorPoints)
+    return(p_val-alpha)
+  }
+  
+  res=uniroot(f,lower=minEps,upper=maxEps)
+  return(res)
 }
