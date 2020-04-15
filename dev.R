@@ -21,20 +21,22 @@ vdst=rep(0,100)
 
 set.seed(01012020)
 for (i in c(1:100)){
-  #vpoint[[i]]=uniformRandomStress(kmin=kmin/scale,kmax=kmax/scale,beta,eps)
-  vpoint[[i]]=powerLawStress(n,eps,kmin=kmin/scale,kmax=kmax/scale,beta)
+  vpoint[[i]]=uniformRandomStress(kmin=kmin/scale,kmax=kmax/scale,beta,eps)
+  #vpoint[[i]]=powerLawStress(n,eps,kmin=kmin/scale,kmax=kmax/scale,beta)
   res=nearestPowerLaw(cumsum(vpoint[[i]]),kmin/scale,kmax/scale,1,3)
   vbeta[i]=res$minimum
   vdst[i]=res$objective
 }
 
+sum(vpoint[[10]])
+summary(vbeta)
 
-k=1
+k=50
 vbeta[k]
 vdst[k]
 pl=powerLawDensity(vbeta[k],kmin/scale,kmax/scale)
 df=vpoint[[k]]
-diff=pl-df
+diff=cumsum(pl)-cumsum(df)
 plot(diff)
 res=nearestPowerLaw(cumsum(vpoint[[k]]),kmin/scale,kmax/scale,2,3,tol=0.001)
 
@@ -53,13 +55,13 @@ v=rep(0,length(p))
 for (i in c(1:1000)){
   counting=rmultinom(n=1,size=n,prob=p)
   v=v+counting/n
-  res=nearestPowerLaw(cumsum(counting/n),kmin/scale,kmax/scale,2,3,tol=0.001)
-  v_beta[i]=res$minimum
-  v_dst[i]=res$objective
-  #res=asymptotic_test(alpha,counting,kmin/scale,kmax/scale,scale=1,tol=0.001)
-  #v_mineps[i]=res[1]
-  #v_dst[i]=res[2]
-  #v_beta[i]=res[3]
+  #res=nearestPowerLaw(cumsum(counting/n),kmin/scale,kmax/scale,2,3,tol=0.001)
+  #v_beta[i]=res$minimum
+  #v_dst[i]=res$objective
+  res=asymptotic_test(alpha,counting,kmin/scale,kmax/scale,scale=1,tol=0.001)
+  v_mineps[i]=res[1]
+  v_dst[i]=res[2]
+  v_beta[i]=res[3]
 }
 
 summary(v_mineps)

@@ -18,7 +18,6 @@ uniformRandomStress<-function(kmin,kmax,beta,eps){
   }
 }
 
-
 powerLawStress<-function(n,eps,kmin,kmax,beta){
   p=powerLawDensity(beta,kmin,kmax)
   q=closeRandomPoint(p,n, eps,beta,kmin,kmax)
