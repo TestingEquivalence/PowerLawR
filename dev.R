@@ -88,9 +88,13 @@ kmax=10e6
 scale=10e3
 nSamples=1000
 n=662
-eps=0.08
+eps=0.09
+tol=0.001
+nSimulation=1000
+nDirections=100
+epsMin=0.09
+epsMax=0.08
 
 frequency=list2freq(citySize,kmin,kmax,scale)
 set.seed(30062020)
-res=bootstrap_test2(alpha, frequency, kmin, kmax,
-                    scale,nSimulation=1000, tol=0.001, nDirections=200)
+bootstrap_test2(alpha,frequency,kmin,kmax,scale,nSimulation,nDirections,eps, tol)
