@@ -102,8 +102,8 @@ bootstrap_test_base<-function(alpha, p, kmin, kmax,
   
   #simulate bootstrap distribution
   i=c(1:nSimulation)
-  f<-function(k){
-    v=rmultinom(n=1,size=n,prob=p)
+  f<-function(k){ 
+    v=rmultinom(n=1,size=n,prob=bndPoint)
     v=v/sum(v)
     cdf=cumsum(v)
     res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol=tol)
