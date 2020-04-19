@@ -100,8 +100,12 @@ bootstrap_test_base<-function(alpha, p, kmin, kmax,
   pos=which.min(dst)
   bndPoint=bndPoints[[pos]]
   
+  res = nearestPowerLaw(cumsum(bndPoint),kmin,kmax,1,3,tol)
+  
+  
   #simulate bootstrap distribution
   i=c(1:nSimulation)
+  
   f<-function(k){ 
     v=rmultinom(n=1,size=n,prob=bndPoint)
     v=v/sum(v)
@@ -112,7 +116,6 @@ bootstrap_test_base<-function(alpha, p, kmin, kmax,
   }
   
   sample=sapply(i,f)
-  
   p_value=sum(distance>=sample)/nSimulation
   return(p_value)
 }
@@ -138,6 +141,11 @@ bootstrap_test2<-function(alpha, frequency, kmin, kmax, scale,
 
 bootstrap_test3<-function(alpha, frequency, kmin, kmax,
                           scale,nSimulation, tol=NA, nDirections,minEps, maxEps){
+  n=sum(frequency)
+  p=frequency/n
+  kmin=kmin/scale
+  kmax=kmax/scale
+  
   #generate H0 points
   exteriorPoints=list()
   for (i in c(1:nDirections)){
@@ -145,11 +153,11 @@ bootstrap_test3<-function(alpha, frequency, kmin, kmax,
   }
   
   f<-function(eps){
-    p_val=bootstrap_test_base(alpha,frequency,kmin,kmax,scale,nSimulation,
-                              tol,eps,exteriorPoints)
+    p_val=bootstrap_test_base(alpha,p,kmin,kmax,nSimulation,tol,eps,
+                              exteriorPoints)
     return(p_val-alpha)
   }
   
   res=uniroot(f,lower=minEps,upper=maxEps)
-  return(res)
+  return(res$root)
 }

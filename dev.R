@@ -84,18 +84,25 @@ sum(v==TRUE)/1000
 citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
 alpha=0.05
 kmin=20e3
-kmax=10e6
+kmax=5e6
 scale=10e3
 nSamples=1000
 n=662
-eps=0.125
-tol=0.0001
-nSimulation=10000
-nDirections=10000
-epsMin=0.09
-epsMax=0.08
+eps=0.06
+tol=0.001
+nSimulation=1000
+nDirections=100
+minEps=0.04
+maxEps=0.05
 
 frequency=list2freq(citySize,kmin,kmax,scale)
+
+asymptotic_test(alpha,frequency,kmin,kmax,scale,tol)
+
 set.seed(30062020)
-bootstrap_test2(alpha,frequency,kmin,kmax,scale,nSimulation,nDirections,eps, tol)
-  
+bootstrap_test2(alpha,frequency,kmin,kmax,scale,nSimulation,
+                nDirections,eps=0.06, tol)
+
+set.seed(30062020)
+res=bootstrap_test3(alpha,frequency,kmin,kmax,scale,nSimulation,
+                tol,nDirections,minEps,maxEps)  
