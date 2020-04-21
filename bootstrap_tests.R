@@ -73,7 +73,7 @@ linearBoundaryPoint<-function(p,q,eps,kmin,kmax){
 }
 
 
-bootstrap_test_base<-function(alpha, p, kmin, kmax,
+bootstrap_test_base<-function(p, kmin, kmax,
                               nSimulation, tol, eps, exteriorPoints)
 {
   cdf=cumsum(p)
@@ -120,7 +120,7 @@ bootstrap_test_base<-function(alpha, p, kmin, kmax,
   return(p_value)
 }
 
-bootstrap_test2<-function(alpha, frequency, kmin, kmax, scale,
+bootstrap_test2<-function(frequency, kmin, kmax, scale,
                           nSimulation, nDirections, eps, tol){
   n=sum(frequency)
   p=frequency/n
@@ -133,13 +133,13 @@ bootstrap_test2<-function(alpha, frequency, kmin, kmax, scale,
     exteriorPoints[[i]]=closeRandomPoint(p,n, eps,beta,kmin,kmax)
   }
   
-  res=bootstrap_test_base(alpha,p,kmin,kmax,nSimulation,tol,eps,
+  res=bootstrap_test_base(p,kmin,kmax,nSimulation,tol,eps,
                           exteriorPoints)
   return(res)
 }
   
 
-bootstrap_test3<-function(alpha, frequency, kmin, kmax,
+bootstrap_test3<-function(frequency, kmin, kmax,
                           scale,nSimulation, tol=NA, nDirections,minEps, maxEps){
   n=sum(frequency)
   p=frequency/n
@@ -153,7 +153,7 @@ bootstrap_test3<-function(alpha, frequency, kmin, kmax,
   }
   
   f<-function(eps){
-    p_val=bootstrap_test_base(alpha,p,kmin,kmax,nSimulation,tol,eps,
+    p_val=bootstrap_test_base(p,kmin,kmax,nSimulation,tol,eps,
                               exteriorPoints)
     return(p_val-alpha)
   }

@@ -57,9 +57,14 @@ test<-function(counting,kmin,kmax, scale){
 
 #bootstrap test 1
 test<-function(counting,kmin,kmax,scale,eps){
-  res=bootstrap_test1(alpah=0.05,frequency = counting,
+  bootstrap_test1(alpha=0.05,frequency = counting,
                       kmin,kmax,scale,nSimulation=1000,tol=0.001)
-  return(res[1]<eps)
+}
+
+#bootstrap test 2
+test<-function(counting,kmin,kmax,scale,eps){
+  bootstrap_test2(frequency =counting ,kmin,kmax,scale,
+                      nSimulation=1000,nDirections = 100 ,eps,tol=0.001)
 }
 
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
@@ -88,9 +93,16 @@ test<-function(counting,kmin,kmax,scale,eps){
 
 #bootstrap test 1
 test<-function(counting,kmin,kmax,scale,eps){
-  res=bootstrap_test1(alpah=0.05,frequency = counting,
+  res=bootstrap_test1(alpha =0.05,frequency = counting,
                       kmin,kmax,scale,nSimulation=1000,tol=0.001)
   return(res[1]<eps)
+}
+
+#bootstrap test 2
+test<-function(counting,kmin,kmax,scale,eps){
+  pval=bootstrap_test2(frequency =counting ,kmin,kmax,scale,
+                       nSimulation=1000,nDirections = 100 ,eps,tol=0.001)
+  return(pval<0.05)
 }
 
 for (eps in c(0.08,0.10,0.12)){
