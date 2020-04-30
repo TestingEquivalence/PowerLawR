@@ -9,12 +9,14 @@ getCluster<-function(){
   clusterExport(cl,c("powerLawDensity","powerLawCDF","l2","nearestPowerLaw","derivative",
                      "asympt_stdev","asymptotic_test","bootstrap_test",
                      "list2freq","fullToss","powerLawLikelihood",
-                     "bootstrap_stdev1","bootstrap_test1","powerLawMLE"))
+                     "bootstrap_stdev1","bootstrap_test1","powerLawMLE",
+                     "bootstrap_test_base","bootstrap_test2","bootstrap_test3",
+                     "closeRandomPoint","linComb","linearBoundaryPoint"))
   
   return(cl)
 }
 
-powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale,test,eps){
+powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale,eps){
   set.seed(01082019)
   points=list()
   for (i in c(1:nSamples)){
@@ -26,12 +28,13 @@ powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale,test,eps){
   return(res)
 }
 
-powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale,test,eps){
+powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale,eps){
   cl=getCluster()
   clusterExport(cl,c("test"))
-  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,scale,test,eps)
+  eps=eps*1
+  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,scale,eps)
   stopCluster(cl)
   
-  #v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,scale,test,eps)
+  # v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,scale,test,eps)
   return(v)
 }

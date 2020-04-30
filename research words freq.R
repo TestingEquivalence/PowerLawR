@@ -18,7 +18,7 @@ kmaxs=c(max(words),2e6,5e6,10e6)
 
 #scale for the words frequency
 #it is necessary for the computational feasibility.
-scale=100
+scale=10
 #significance level
 alpha=0.05
 

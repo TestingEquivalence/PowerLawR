@@ -42,33 +42,12 @@ write.table(result$sample_size,paste("MLE_sample_size_",scale,".csv"))
 
 #compute test power at the power law points
 ###########################################
-kmin=20e3
-kmax=10e6
-scale=10e3
-nSamples=1000
-n=662
-
-
-# asymptotic test
-test<-function(counting,kmin,kmax, scale){
-  asymptotic_test(alpha=0.05,frequency = counting,kmin,kmax,scale, 
-                  tol=0.001)
-}
-
-#bootstrap test 1
-test<-function(counting,kmin,kmax,scale,eps){
-  bootstrap_test1(alpha=0.05,frequency = counting,
-                      kmin,kmax,scale,nSimulation=1000,tol=0.001)
-}
-
-#bootstrap test 2
-test<-function(counting,kmin,kmax,scale,eps){
-  bootstrap_test2(frequency =counting ,kmin,kmax,scale,
-                      nSimulation=1000,nDirections = 100 ,eps,tol=0.001)
-}
+parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662,
+          alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, test="asymptotic")  
 
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
-  size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples)
+  parameter$beta=beta
+  size=sizeAtPowerLaw(parameter)
   write.table(size, paste("size",beta,".csv"))
 }
 
@@ -100,8 +79,8 @@ test<-function(counting,kmin,kmax,scale,eps){
 
 #bootstrap test 2
 test<-function(counting,kmin,kmax,scale,eps){
-  pval=bootstrap_test2(frequency =counting ,kmin,kmax,scale,
-                       nSimulation=1000,nDirections = 100 ,eps,tol=0.001)
+  pval=bootstrap_test2(frequency = counting,kmin,kmax,scale,
+                       nSimulation = 1000,nDirections =100 ,eps=0.08,tol = 0.001)
   return(pval<0.05)
 }
 

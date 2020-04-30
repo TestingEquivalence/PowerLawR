@@ -1,20 +1,29 @@
-fullToss<-function(i,p, n, kmin,kmax, scale){
+fullToss<-function(i,parameter){
   set.seed(i*1000000)
-  counting=rmultinom(n=1,size=n,prob=p)
-  res=test(counting,kmin,kmax, scale)
-  return(res)
+  counting=rmultinom(n=1,size=parameter$n,prob=parameter$p)
+  
+  if (parameter$test=="asymptotic"){
+    res=asymptotic_test(alpha = parameter$alpha,frequency = counting,
+                        kmin = parameter$kmin,kmax =  parameter$kmax,
+                        scale = parameter$scale,tol = parameter$tol)
+    return(res)
+  }
+  
+  return(NA)
 }
 
-sizeAtPowerLaw<-function(n,kmin,kmax, scale, beta,nSamples){
+sizeAtPowerLaw<-function(parameter){
   #calculate density of discrete power law
-  p=powerLawDensity(beta,kmin=kmin/scale,kmax=kmax/scale)
+  kmin=parameter$kmin/parameter$scale
+  kmax=parameter$kmax/parameter$scale
+  beta=parameter$beta
+  parameter$p=powerLawDensity(beta,kmin,kmax)
   
   #simulate tests
   #v=sapply(i, fullToss,p,n,kmin,kmax,scale)
   i=c(1:nSamples)
   cl=getCluster()
-  clusterExport(cl,c("test"))
-  v=parSapply(cl,i, fullToss,p,n,kmin,kmax,scale)
+  v=parSapply(cl,i, fullToss,parameter)
   stopCluster(cl)
   
   return(v)

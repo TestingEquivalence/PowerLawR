@@ -90,7 +90,7 @@ bootstrap_test_base<-function(p, kmin, kmax,
   bndPoints=list()
   nDir=length(exteriorPoints)
   for (i in c(1:nDir)){
-    bndPoints[[i]]=linearBoundaryPoint(p,q=exteriorPoints[[i]],eps,kmin,kmax)
+    bndPoints[[i]]=linearBoundaryPoint(p=p,q=exteriorPoints[[i]],eps=eps,kmin=kmin,kmax=kmax)
   }
   
   #find closes bnd point
@@ -130,11 +130,10 @@ bootstrap_test2<-function(frequency, kmin, kmax, scale,
   #generate H0 points
   exteriorPoints=list()
   for (i in c(1:nDirections)){
-    exteriorPoints[[i]]=closeRandomPoint(p,n, eps,beta,kmin,kmax)
+    exteriorPoints[[i]]=closeRandomPoint(p,n,eps,beta,kmin,kmax)
   }
   
-  res=bootstrap_test_base(p,kmin,kmax,nSimulation,tol,eps,
-                          exteriorPoints)
+  res=bootstrap_test_base(p,kmin,kmax,nSimulation,tol,eps,exteriorPoints)
   return(res)
 }
   

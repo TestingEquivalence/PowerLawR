@@ -48,7 +48,7 @@ boundaryPower<-function(n,eps,kmin,kmax,scale,beta,nSamples,
   points=lapply(i, f)
   
   eps=eps*epsAdj
-  res=powerAtPoints(points, n,  nSamples,  kmin, kmax,scale,test,eps)
+  res=powerAtPoints(points, n,  nSamples,  kmin, kmax,scale,eps)
   return(res)
 }
 
