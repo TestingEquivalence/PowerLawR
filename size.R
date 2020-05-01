@@ -37,7 +37,7 @@ sizeAtPowerLaw<-function(parameter){
   
   #simulate tests
   #v=sapply(i, fullToss,p,n,kmin,kmax,scale)
-  i=c(1:nSamples)
+  i=c(1:parameter$nSamples)
   cl=getCluster()
   v=parSapply(cl,i, fullToss,parameter)
   stopCluster(cl)
