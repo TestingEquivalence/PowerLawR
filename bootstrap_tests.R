@@ -73,17 +73,31 @@ linearBoundaryPoint<-function(p,q,eps,kmin,kmax){
 }
 
 
-bootstrap_test_base<-function(p, kmin, kmax,
-                              nSimulation, tol, eps, exteriorPoints)
+bootstrap_test2<-function(frequency, kmin, kmax, scale,
+                          nSimulation, nDirections, eps, tol)
 {
+  #rescale
+  n=sum(frequency)
+  p=frequency/n
+  kmin=kmin/scale
+  kmax=kmax/scale
+  
+  #calculate distance
   cdf=cumsum(p)
   res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol)
   beta=res$minimum
   distance=res$objective
   
+  #check if it could work
   if (distance>=eps) {
     p_value=1
     return(p_value)
+  }
+  
+  # generate H0 points
+  exteriorPoints=list()
+  for (i in c(1:nDirections)){
+    exteriorPoints[[i]]=closeRandomPoint(p=p,n=n,eps = eps,beta=beta,kmin = kmin,kmax = kmax)
   }
   
   #generate boundary points
@@ -120,23 +134,6 @@ bootstrap_test_base<-function(p, kmin, kmax,
   return(p_value)
 }
 
-bootstrap_test2<-function(frequency, kmin, kmax, scale,
-                          nSimulation, nDirections, eps, tol){
-  n=sum(frequency)
-  p=frequency/n
-  kmin=kmin/scale
-  kmax=kmax/scale
-  
-  #generate H0 points
-  exteriorPoints=list()
-  for (i in c(1:nDirections)){
-    exteriorPoints[[i]]=closeRandomPoint(p,n,eps,beta,kmin,kmax)
-  }
-  
-  res=bootstrap_test_base(p,kmin,kmax,nSimulation,tol,eps,exteriorPoints)
-  return(res)
-}
-  
 
 bootstrap_test3<-function(frequency, kmin, kmax,
                           scale,nSimulation, tol=NA, nDirections,minEps, maxEps){

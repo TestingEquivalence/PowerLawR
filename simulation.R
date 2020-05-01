@@ -30,7 +30,6 @@ powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale,eps){
 
 powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale,eps){
   cl=getCluster()
-  clusterExport(cl,c("test"))
   eps=eps*1
   v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,scale,eps)
   stopCluster(cl)
