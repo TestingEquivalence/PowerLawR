@@ -27,28 +27,32 @@ powerLawStress<-function(n,eps,kmin,kmax,beta){
 }
 
 
-boundaryPower<-function(n,eps,kmin,kmax,scale,beta,nSamples,
-                        boundaryPointType,epsAdj){
+boundaryPower<-function(parameter){
   
   i=c(1:100)
   
-  if (boundaryPointType==1){
+  if (parameter$boundaryPointType==1){
     f<-function(i){
-      powerLawStress(n,eps,kmin=kmin/scale,kmax=kmax/scale,beta)
+      powerLawStress(n=parameter$n,eps=parameter$eps,
+                     kmin=parameter$kmin/parameter$scale,
+                     kmax=parameter$kmax/parameter$scale,parameter$beta)
     }  
   }
   
-  if (boundaryPointType==2){
+  if (parameter$boundaryPointType==2){
     f<-function(i){
-      uniformRandomStress(kmin=kmin/scale,kmax=kmax/scale,beta,eps)
+      uniformRandomStress(kmin=parameter$kmin/parameter$scale,
+                          kmax=parameter$kmax/parameter$scale,
+                          parameter$beta,
+                          parameter$eps)
     }
   }
   
   set.seed(01012020)
   points=lapply(i, f)
   
-  eps=eps*epsAdj
-  res=powerAtPoints(points, n,  nSamples,  kmin, kmax,scale,eps)
+  parameter$eps=parameter$eps*parameter$epsAdj
+  res=powerAtPoints(points, parameter)
   return(res)
 }
 

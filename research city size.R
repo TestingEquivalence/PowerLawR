@@ -56,35 +56,10 @@ for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
 
 # compute test power at boundary points
 ###########################################
-kmin=20e3
-kmax=10e6
-beta=2.3
-scale=10e3
-nSamples=1000
-n=662
-epsAdj=1
+parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662,
+               alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, test="bootstrap2",
+               eps=0.08)  
 
-# asymptotic test 
-
-test<-function(counting,kmin,kmax,scale,eps){
-  res=asymptotic_test(alpha=0.05,frequency = counting,kmin,kmax,scale, 
-                      tol=0.001)
-  return(res[1]<eps)
-}
-
-#bootstrap test 1
-test<-function(counting,kmin,kmax,scale,eps){
-  res=bootstrap_test1(alpha =0.05,frequency = counting,
-                      kmin,kmax,scale,nSimulation=1000,tol=0.001)
-  return(res[1]<eps)
-}
-
-#bootstrap test 2
-test<-function(counting,kmin,kmax,scale,eps){
-  pval=bootstrap_test2(frequency = counting,kmin,kmax,scale,
-                       nSimulation = 1000,nDirections =100 ,eps=0.08,tol = 0.001)
-  return(pval<0.05)
-}
 
 for (eps in c(0.08,0.10,0.12)){
   pw=boundaryPower(n,eps,kmin,kmax,scale,beta,nSamples, boundaryPointType=1,epsAdj)

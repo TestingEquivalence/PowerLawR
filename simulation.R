@@ -16,22 +16,48 @@ getCluster<-function(){
   return(cl)
 }
 
-powerAtPoint<-function(p, n,  nSamples,  kmin, kmax,scale,eps){
-  set.seed(01082019)
-  points=list()
-  for (i in c(1:nSamples)){
-    points[[i]]=rmultinom(n=1,size=n,prob=p)  
+test<-function(counting,parameter){
+  if (parameter$test=="asymptotic"){
+    res=asymptotic_test(alpha = parameter$alpha,frequency = counting,
+                        kmin = parameter$kmin,kmax =  parameter$kmax,
+                        scale = parameter$scale,tol = parameter$tol)
+    return(res[1]<parameter$eps)
   }
   
-  v=sapply(points, test,kmin,kmax,scale,eps)
+  if (parameter$test=="bootstrap1"){
+    res=bootstrap_test1(alpha = parameter$alpha, frequency = counting,
+                        kmin = parameter$kmin,kmax = parameter$kmax,
+                        scale = parameter$scale, nSimulation = parameter$nSimulation,
+                        tol=parameter$tol)
+    return(res[1]<parameter$eps)
+  }
+  
+  if (parameter$test=="bootstrap2"){
+    pval=bootstrap_test2(frequency = counting, kmin=parameter$kmin, kmax=parameter$kmax,
+                        scale = parameter$scale,nSimulation = parameter$nSimulation,
+                        nDirections = parameter$nDirections,eps=parameter$eps,
+                        tol=parameter$tol)
+    return(pval<0.05)
+  }
+  
+  return(NA)
+}
+
+powerAtPoint<-function(p,parameter){
+  set.seed(01082019)
+  points=list()
+  for (i in c(1:parameter$nSamples)){
+    points[[i]]=rmultinom(n=1,size=parameter$n,prob=p)  
+  }
+  
+  v=sapply(points, test,parameter)
   res=sum(v==TRUE)/nSamples
   return(res)
 }
 
-powerAtPoints<-function(points, n,  nSamples,  kmin, kmax,scale,eps){
+powerAtPoints<-function(points, parameter){
   cl=getCluster()
-  eps=eps*1
-  v=parSapply(cl,points,powerAtPoint,n,nSamples,kmin,kmax,scale,eps)
+  v=parSapply(cl,points,powerAtPoint,parameter)
   stopCluster(cl)
   
   # v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,scale,test,eps)
