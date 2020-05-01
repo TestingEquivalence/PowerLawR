@@ -9,6 +9,22 @@ fullToss<-function(i,parameter){
     return(res)
   }
   
+  if (parameter$test=="bootstrap1"){
+    res=bootstrap_test1(alpha = parameter$alpha, frequency = counting,
+                        kmin = parameter$kmin,kmax = parameter$kmax,
+                        scale = parameter$scale, nSimulation = parameter$nSimulation,
+                        tol=parameter$tol)
+    return(res)
+  }
+  
+  if (parameter$test=="bootstrap2"){
+    res=bootstrap_test2(frequency = counting, kmin=parameter$kmin, kmax=parameter$kmax,
+                        scale = parameter$scale,nSimulation = parameter$nSimulation,
+                        nDirections = parameter$nDirections,eps=parameter$eps,
+                        tol=parameter$tol)
+    return(res)
+  }
+  
   return(NA)
 }
 

@@ -43,7 +43,8 @@ write.table(result$sample_size,paste("MLE_sample_size_",scale,".csv"))
 #compute test power at the power law points
 ###########################################
 parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662,
-          alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, test="asymptotic")  
+          alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, test="bootstrap2",
+          eps=0.08)  
 
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
   parameter$beta=beta
