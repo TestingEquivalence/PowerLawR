@@ -50,7 +50,7 @@ parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662,
 for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
   parameter$beta=beta
   size=sizeAtPowerLaw(parameter)
-  write.table(size, paste("size",beta,".csv"))
+  write.table(size, paste("size",beta,"_",eps,".csv"))
 }
 
 
