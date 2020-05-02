@@ -102,6 +102,6 @@ asymptotic_test(alpha,frequency,kmin,kmax,scale,tol)
 set.seed(30062020)
 bootstrap_test2(frequency,kmin,kmax,scale,nSimulation,nDirections,eps=.06075,tol)
 
- set.seed(30062020)
+set.seed(30062020)
 res=bootstrap_test3(frequency,kmin,kmax,scale,nSimulation,
                 tol,nDirections,minEps,maxEps)  

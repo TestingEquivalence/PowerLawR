@@ -51,7 +51,7 @@ powerAtPoint<-function(p,parameter){
   }
   
   v=sapply(points, test,parameter)
-  res=sum(v==TRUE)/nSamples
+  res=sum(v==TRUE)/parameter$nSamples
   return(res)
 }
 
@@ -60,6 +60,6 @@ powerAtPoints<-function(points, parameter){
   v=parSapply(cl,points,powerAtPoint,parameter)
   stopCluster(cl)
   
-  # v=sapply(points,powerAtPoint,n,nSamples,kmin,kmax,scale,test,eps)
+  #v=sapply(points,powerAtPoint,parameter)
   return(v)
 }
