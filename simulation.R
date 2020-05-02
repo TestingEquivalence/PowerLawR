@@ -10,7 +10,7 @@ getCluster<-function(){
                      "asympt_stdev","asymptotic_test","bootstrap_test",
                      "list2freq","fullToss","powerLawLikelihood",
                      "bootstrap_stdev1","bootstrap_test1","powerLawMLE",
-                     "bootstrap_test2","bootstrap_test3",
+                     "bootstrap_test2","bootstrap_test3","test",
                      "closeRandomPoint","linComb","linearBoundaryPoint"))
   
   return(cl)
