@@ -37,7 +37,7 @@ test<-function(counting,parameter){
                         scale = parameter$scale,nSimulation = parameter$nSimulation,
                         nDirections = parameter$nDirections,eps=parameter$eps,
                         tol=parameter$tol)
-    return(pval<0.05)
+    return(pval<parameter$alpha)
   }
   
   return(NA)

@@ -15,11 +15,8 @@ kmins=c(10e3,20e3,30e3,40e3,50e3)
 #different k_max values, first value coincides with largest city
 kmaxs=c(max(citySize),5e6,10e6,20e6)
 
-#scale for the populatuion measurement
-#it is necessary for the computational feasibility.
-scale=1000
-#significance level
-alpha=0.05
+parameter=list(scale=10e3,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
+               test="asymptotic", kmins=kmins, kmaxs=kmaxs, counting=citySize)
 
 #carry out multiple asymptotic tests for the power law
 #an asymptotic test is computed for each combination of k_min and k_max 
@@ -58,7 +55,7 @@ for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
 ###########################################
 parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662, beta=2.3,
                alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, test="asymptotic",
-               eps=0.08,epsAdj=1)  
+               eps=0.12,epsAdj=1)  
 
 
 for (eps in c(0.08,0.10,0.12)){

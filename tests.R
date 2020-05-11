@@ -56,11 +56,16 @@ bootstrap_test<-function(alpha, frequency, kmin, kmax,
 }
   
 
-fmultiple<-function(row, kmins, kmaxs, alpha, scale, 
-                    counting,bootstrap, nSimulation){
-  kmin=kmins[row[1]]
-  kmax=kmaxs[row[2]]
-  frequency=list2freq(counting,kmin,kmax,scale)
+fmultiple<-function(row,parameter){
+  kmin=parameter$kmins[row[1]]
+  kmax=parameter$kmaxs[row[2]]
+  frequency=list2freq(parameter$counting,kmin,kmax,parameter$scale)
+  
+  if (parameter$test=="asymptotic"){
+    res=asymptotic_test(alpha = parameter$alpha,frequency = counting,
+                        kmin = parameter$kmin,kmax =  parameter$kmax,
+                        scale = parameter$scale,tol = parameter$tol)
+  }
   
   if (bootstrap){
     set.seed(30062020)
@@ -74,27 +79,23 @@ fmultiple<-function(row, kmins, kmaxs, alpha, scale,
   return(c(row[1],row[2],res))
 }
 
-multiple_test <- function(alpha, counting, kmins, kmaxs,
-                          scale,bootstrap=FALSE, nSimulation=0) {
-  nrow=length(kmins)
-  ncol = length(kmaxs)
+multiple_test <- function(parameter) {
+  nrow=length(parameter$kmins)
+  ncol = length(parameter$kmaxs)
   min_eps=matrix(data=NA,nrow,ncol)
   beta=matrix(data=NA,nrow,ncol)
   distance=matrix(data=NA,nrow,ncol)
   sample_size=matrix(data=NA,nrow,ncol)
   
+  rownames(min_eps)=parameter$kmins
+  rownames(beta)=parameter$kmins
+  rownames(distance)=parameter$kmins
+  rownames(sample_size)=parameter$kmins
   
-  rownames(min_eps)=kmins
-  rownames(beta)=kmins
-  rownames(distance)=kmins
-  rownames(sample_size)=kmins
-  
-  
-  colnames(min_eps)=kmaxs
-  colnames(beta)=kmaxs
-  colnames(distance)=kmaxs
-  colnames(sample_size)=kmaxs
-  
+  colnames(min_eps)=parameter$kmaxs
+  colnames(beta)=parameter$kmaxs
+  colnames(distance)=parameter$kmaxs
+  colnames(sample_size)=parameter$kmaxs
   
   i=c(1:nrow)
   j=c(1:ncol)
@@ -103,8 +104,7 @@ multiple_test <- function(alpha, counting, kmins, kmaxs,
   
   cl=getCluster()
   clusterExport(cl,c("fmultiple"))
-  ls=parApply(cl,grd, 1, fmultiple, kmins,kmaxs,alpha,scale,
-              counting, bootstrap,nSimulation)
+  ls=parApply(cl,grd, 1, fmultiple,parameter)
   stopCluster(cl)
   
   # ls=apply(grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
