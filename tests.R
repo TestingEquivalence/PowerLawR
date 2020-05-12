@@ -62,20 +62,19 @@ fmultiple<-function(row,parameter){
   frequency=list2freq(parameter$counting,kmin,kmax,parameter$scale)
   
   if (parameter$test=="asymptotic"){
-    res=asymptotic_test(alpha = parameter$alpha,frequency = counting,
-                        kmin = parameter$kmin,kmax =  parameter$kmax,
+    res=asymptotic_test(alpha = parameter$alpha,frequency,
+                        kmin,kmax,
                         scale = parameter$scale,tol = parameter$tol)
   }
   
-  if (bootstrap){
+  if (parameter$test=="bootstrap1"){
     set.seed(30062020)
-    res=bootstrap_test(alpha,frequency,kmin,kmax,scale,nSimulation)
-  }
-  else {
-    res=asymptotic_test(alpha,frequency,kmin,kmax,scale)
+    res=bootstrap_test1(alpha = parameter$alpha, frequency,
+                        kmin,kmax,
+                        scale = parameter$scale, nSimulation = parameter$nSimulation,
+                        tol=parameter$tol)
   }
   
-  print(paste("done: ","kmin=",kmin," kmax=", kmax))
   return(c(row[1],row[2],res))
 }
 

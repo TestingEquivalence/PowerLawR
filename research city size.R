@@ -16,20 +16,19 @@ kmins=c(10e3,20e3,30e3,40e3,50e3)
 kmaxs=c(max(citySize),5e6,10e6,20e6)
 
 parameter=list(scale=10e3,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
-               test="asymptotic", kmins=kmins, kmaxs=kmaxs, counting=citySize)
+               test="bootstrap1", kmins=kmins, kmaxs=kmaxs, counting=citySize)
 
-#carry out multiple asymptotic tests for the power law
-#an asymptotic test is computed for each combination of k_min and k_max 
+#carry out multiple tests for the power law
+#given test is computed for each combination of k_min and k_max 
 #use all but one CPU cores
 
-result=multiple_test(alpha,citySize,kmins,kmaxs, scale, bootstrap = TRUE,
-                     nSimulation = 1000)
+result=multiple_test(parameter)
 
 #write test results
-write.table(result$beta,paste("beta_",scale,".csv"))
-write.table(result$distance,paste("distance_",scale,".csv"))
-write.table(result$min_eps,paste("min_eps_",scale,".csv"))
-write.table(result$sample_size,paste("sample_size_",scale,".csv"))
+write.table(result$beta,paste("beta.csv"))
+write.table(result$distance,paste("distance.csv"))
+write.table(result$min_eps,paste("min_eps.csv"))
+write.table(result$sample_size,paste("sample_size.csv"))
 
 #MLE Estimator of beta
 result=multiple_MLE(alpha,citySize,kmins,kmaxs,scale)
