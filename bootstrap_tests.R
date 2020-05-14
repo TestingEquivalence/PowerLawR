@@ -135,25 +135,45 @@ bootstrap_test2<-function(frequency, kmin, kmax, scale,
 }
 
 
-bootstrap_test3<-function(frequency, kmin, kmax,
-                          scale,nSimulation, tol=NA, nDirections,minEps, maxEps){
+bootstrap_test2_1<-function(alpha,frequency, kmin, kmax,
+                          scale,nSimulation, tol=NA, 
+                          nDirections,minEps=NA, maxEps=NA){
   n=sum(frequency)
   p=frequency/n
   kmin=kmin/scale
   kmax=kmax/scale
   
-  #generate H0 points
-  exteriorPoints=list()
-  for (i in c(1:nDirections)){
-    exteriorPoints[[i]]=closeRandomPoint(p,n, maxEps,beta,kmin,kmax)
+  #default min eps
+  cdf=cumsum(p)
+  res = nearestPowerLaw(cdf,kmin,kmax,1,3, tol)
+  beta=res$minimum
+  distance=res$objective
+    
+  if (is.na(minEps)){
+    minEps=distance
+  }
+    
+  if (is.na(maxEps)){
+    maxEps=distance*1.3
   }
   
   f<-function(eps){
-    p_val=bootstrap_test_base(p,kmin,kmax,nSimulation,tol,eps,
-                              exteriorPoints)
+    p_val=bootstrap_test2(frequency,kmin,kmax,scale=1,nSimulation,nDirections,eps,tol)
     return(p_val-alpha)
   }
   
-  res=uniroot(f,lower=minEps,upper=maxEps)
-  return(res$root)
+  tryCatch({
+    res=uniroot(f,lower=minEps,upper=maxEps,tol = alpha/100)
+    min_eps=res$root
+  },
+  error=function(cond){
+    vec=c(NA,distance,beta,n)
+    names(vec)=c("min_eps","distance","beta","sample_size")
+  },
+  warning=function(cond){}
+  )
+  
+  vec=c(min_eps,distance,beta,n)
+  names(vec)=c("min_eps","distance","beta","sample_size")
+  return(vec)
 }

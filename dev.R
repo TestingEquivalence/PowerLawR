@@ -84,8 +84,8 @@ sum(v==TRUE)/1000
 citySize=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\CitySize\\list_ge.csv")
 alpha=0.05
 kmin=20e3
-kmax=5e6
-scale=20e3
+kmax=10e6
+scale=10e3
 nSamples=1000
 n=662
 eps=0.065
@@ -103,5 +103,5 @@ set.seed(30062020)
 bootstrap_test2(frequency,kmin,kmax,scale,nSimulation,nDirections,eps=.06075,tol)
 
 set.seed(30062020)
-res=bootstrap_test3(frequency,kmin,kmax,scale,nSimulation,
-                tol,nDirections,minEps,maxEps)  
+res=bootstrap_test2_1(alpha,frequency,kmin,kmax,scale,nSimulation,
+                tol,nDirections)  

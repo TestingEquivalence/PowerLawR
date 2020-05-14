@@ -75,6 +75,15 @@ fmultiple<-function(row,parameter){
                         tol=parameter$tol)
   }
   
+  if (parameter$test=="bootstrap2"){
+    set.seed(30062020)
+    res=bootstrap_test2_1(alpha=parameter$alpha,frequency=frequency, 
+                          kmin=kmin, kmax=kmax,
+                          scale=parameter$scale,
+                          nSimulation=parameter$tol, tol=parameter$tol, 
+                          nDirections=parameter$nDirections)
+  }
+  
   return(c(row[1],row[2],res))
 }
 
@@ -101,13 +110,12 @@ multiple_test <- function(parameter) {
   grd=expand.grid(i,j)
   colnames(grd)=c("i","j")
   
-  cl=getCluster()
-  clusterExport(cl,c("fmultiple"))
-  ls=parApply(cl,grd, 1, fmultiple,parameter)
-  stopCluster(cl)
+  # cl=getCluster()
+  # clusterExport(cl,c("fmultiple"))
+  # ls=parApply(cl,grd, 1, fmultiple,parameter)
+  # stopCluster(cl)
   
-  # ls=apply(grd, 1, fmultiple, kmins,kmaxs,alpha,scale, 
-  #             counting, bootstrap,nSimulation)
+  ls=apply(grd, 1, fmultiple, parameter)
  
   for (rn in c(1:ncol(ls))){
     r=ls[,rn]
