@@ -21,15 +21,20 @@ vdst=rep(0,100)
 
 set.seed(01012020)
 for (i in c(1:100)){
-  vpoint[[i]]=uniformRandomStress(kmin=kmin/scale,kmax=kmax/scale,beta,eps)
-  #vpoint[[i]]=powerLawStress(n,eps,kmin=kmin/scale,kmax=kmax/scale,beta)
+  #vpoint[[i]]=uniformRandomStress(kmin=kmin/scale,kmax=kmax/scale,beta,eps)
+  vpoint[[i]]=powerLawStress(n,eps,kmin=kmin/scale,kmax=kmax/scale,beta)
   res=nearestPowerLaw(cumsum(vpoint[[i]]),kmin/scale,kmax/scale,1,3)
   vbeta[i]=res$minimum
   vdst[i]=res$objective
 }
 
-sum(vpoint[[10]])
-summary(vbeta)
+sums=sapply(vpoint, sum)
+View(sums)
+mins=sapply(vpoint, min)
+mins>=0
+maxs=sapply(vpoint, max)
+maxs<=1
+
 
 k=50
 vbeta[k]
