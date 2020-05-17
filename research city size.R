@@ -15,7 +15,7 @@ kmins=c(10e3,20e3,30e3,40e3,50e3)
 #different k_max values, first value coincides with largest city
 kmaxs=c(max(citySize),5e6,10e6,20e6)
 
-parameter=list(scale=10e3,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
+parameter=list(scale=1e3,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
                test="bootstrap2", kmins=kmins, kmaxs=kmaxs, counting=citySize)
 
 #carry out multiple tests for the power law
@@ -31,10 +31,10 @@ write.table(result$min_eps,paste("min_eps.csv"))
 write.table(result$sample_size,paste("sample_size.csv"))
 
 #MLE Estimator of beta
-result=multiple_MLE(alpha,citySize,kmins,kmaxs,scale)
+result=multiple_MLE(parameter)
 
-write.table(result$beta,paste("MLE_beta_",scale,".csv"))
-write.table(result$sample_size,paste("MLE_sample_size_",scale,".csv"))
+write.table(result$beta,paste("MLE_beta.csv"))
+write.table(result$sample_size,paste("MLE_sample_size.csv"))
 
 #compute test power at the power law points
 ###########################################

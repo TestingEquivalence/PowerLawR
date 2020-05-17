@@ -130,15 +130,15 @@ multiple_test <- function(parameter) {
   ls=list(min_eps=min_eps,distance=distance,beta=beta, sample_size=sample_size)
   return(ls)
 }
-multiple_MLE <- function(alpha, counting, kmins, kmaxs,scale) {
-  nrow=length(kmins)
-  ncol = length(kmaxs)
+multiple_MLE <- function(parameter) {
+  nrow=length(parameter$kmins)
+  ncol = length(parameter$kmaxs)
   beta=matrix(data=NA,nrow,ncol)
   sample_size=matrix(data=NA,nrow,ncol)
-  rownames(beta)=kmins
-  rownames(sample_size)=kmins
-  colnames(beta)=kmaxs
-  colnames(sample_size)=kmaxs
+  rownames(beta)=parameter$kmins
+  rownames(sample_size)=parameter$kmins
+  colnames(beta)=parameter$kmaxs
+  colnames(sample_size)=parameter$kmaxs
   
   
   i=c(1:nrow)
@@ -148,11 +148,11 @@ multiple_MLE <- function(alpha, counting, kmins, kmaxs,scale) {
   
   for (i in c(1:nrow)){
     for (j in c(1:ncol)){
-      kmin=kmins[i]
-      kmax=kmaxs[j]
-      frq=list2freq(counting,kmin,kmax,scale)
+      kmin=parameter$kmins[i]
+      kmax=parameter$kmaxs[j]
+      frq=list2freq(parameter$counting,kmin,kmax,parameter$scale)
       sample_size[i,j]=sum(frq)
-      res=powerLawMLE(frq,kmin/scale,kmax/scale,1,3)
+      res=powerLawMLE(frq,kmin/parameter$scale,kmax/parameter$scale,1,3)
       beta[i,j]=res$minimum
     }
   }
