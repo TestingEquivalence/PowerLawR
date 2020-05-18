@@ -25,6 +25,13 @@ fullToss<-function(i,parameter){
     return(res)
   }
   
+  if (parameter$test=="MLE"){
+    res=powerLawMLE(counting,
+                    kmin=parameter$kmin/parameter$scale,
+                    kmax=parameter$kmax/parameter$scale,1,3)
+    return(res)
+  }
+  
   return(NA)
 }
 

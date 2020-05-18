@@ -38,12 +38,12 @@ write.table(result$sample_size,paste("MLE_sample_size.csv"))
 
 #compute test power at the power law points
 ###########################################
-parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662,
-          alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, test="bootstrap2",
+parameter=list(kmin=20e3,kmax=10e6,scale=1e3,nSamples=1000,n=662,
+          alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, test="asymptotic",
           eps=0.08)  
 
 
-for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
+for (beta in c(2.1,2.2,2.3,2.4,2.5)) {
   parameter$beta=beta
   size=sizeAtPowerLaw(parameter)
   write.table(size, paste("size",beta,"_",parameter$eps*100,".csv"))
@@ -52,9 +52,9 @@ for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
 
 # compute test power at boundary points
 ###########################################
-parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662, beta=2.3,
-               alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, test="asymptotic",
-               eps=0.12,epsAdj=1)  
+parameter=list(kmin=20e3,kmax=10e6,scale=1e3,nSamples=1000,n=662, beta=2.3,
+               alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100,
+               test="MLE",eps=0.12,epsAdj=1)  
 
 
 for (eps in c(0.08,0.10,0.12)){
@@ -71,23 +71,6 @@ for (eps in c(0.08,0.10,0.12)){
   write.table(pw, paste("uniformRandomStress",eps*100,".csv"))
 }
  
-#MLE at the power law
-####################################
-kmin=20e3
-kmax=10e6
-scale=10e3
-nSamples=1000
-n=662
-
-test<-function(counting,kmin,kmax, scale){
-  res=powerLawMLE(counting,kmin/scale,kmax/scale,1,3)
-  return(res$minimum)
-}
-
-for (beta in c(2.1, 2.2, 2.3, 2.4, 2.5)) {
-  size=sizeAtPowerLaw(n,kmin,kmax,scale,beta,nSamples)
-  write.table(size, paste("size",beta,".csv"))
-}
 
 
 
