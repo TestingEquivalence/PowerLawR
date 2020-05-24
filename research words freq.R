@@ -16,14 +16,14 @@ words=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\WordCou
 #kmaxs=c(max(words),2e6,5e6,10e6)
 
 parameter=list(scale=1000,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
-               test="asymptotic", 
+               test="bootstrap1", 
                kmins=c(1000,2000,3000, 5000, 10000), 
                kmaxs=c(max(words),2e6,5e6,10e6), 
                counting=words)
 
-parameter=list(scale=100,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
-               test="asymptotic", 
-               kmins=c(100,200,300, 500, 1000), 
+parameter=list(scale=10,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
+               test="asymptotic",    #"bootstrap1"
+               kmins=c(500, 600, 700,800, 1000), 
                kmaxs=c(max(words),2e6,5e6,10e6), 
                counting=words)
 
