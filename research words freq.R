@@ -51,7 +51,7 @@ write.table(result$sample_size,paste("MLE_sample_size.csv"))
 parameter=list(kmin=1000, kmax=5e6, scale=1000, nSamples=1000, n=1984,
                alpha=0.05, tol=0.001, nSimulation=1000, 
                nDirections = 100, 
-               test="MLE")  
+               test="bootstrap1")  
 
 
 for (beta in c(1.9, 2.0, 2.05, 2.1)) {
