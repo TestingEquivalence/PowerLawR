@@ -49,8 +49,7 @@ write.table(result$sample_size,paste("MLE_sample_size.csv"))
 #compute test power at the power law points
 ###########################################
 parameter=list(kmin=1000, kmax=5e6, scale=1000, nSamples=1000, n=1984,
-               alpha=0.05, tol=0.001, nSimulation=1000, 
-               nDirections = 100, 
+               alpha=0.05, tol=0.001, nSimulation=100, 
                test="bootstrap1")  
 
 
@@ -63,16 +62,9 @@ for (beta in c(1.9, 2.0, 2.05, 2.1)) {
 # compute test power at boundary points
 ###########################################
 parameter=list(kmin=1000, kmax=5e6, scale=1000, nSamples=1000, n=1984, 
-               beta=2.05, alpha=0.05, tol=0.001, nSimulation=1000, nDirections = 100,
+               beta=1.9, alpha=0.05, tol=0.001, nSimulation=100,
                test="asymptotic", epsAdj=1)  
 
-
-for (eps in c(0.08,0.09)){
-  parameter$boundaryPointType=1
-  parameter$eps=eps
-  pw=boundaryPower(parameter)
-  write.table(pw, paste("powerLawStress",eps*100,".csv"))
-}
 
 for (eps in c(0.08,0.09)){
   parameter$boundaryPointType=2
