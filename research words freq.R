@@ -66,7 +66,7 @@ parameter=list(kmin=1000, kmax=5e6, scale=1000, nSamples=1000, n=1984,
                test="asymptotic", epsAdj=1)  
 
 
-for (eps in c(0.08,0.09)){
+for (eps in c(0.10,0.12)){
   parameter$boundaryPointType=2
   parameter$eps=eps
   pw=boundaryPower(parameter)
