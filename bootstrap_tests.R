@@ -15,6 +15,32 @@ bootstrap_stdev1<-function(p,n,nSimulation,kmin,kmax, tol){
   return(sqrt(var(sample)))
 }
 
+bootstrap_stdev1_bias<-function(p,n,nSimulation,kmin,kmax, tol){
+  
+  i=c(1:nSimulation)
+  f<-function(k){
+    v=rmultinom(n=1,size=n,prob=p)
+    v=v/sum(v)
+    cdf=cumsum(v)
+    res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol=tol)
+    
+    distance=res$objective
+    return(distance*distance)
+  }
+  
+  sample=sapply(i,f)
+  cdf=cumsum(p)
+  res= nearestPowerLaw(cdf,kmin,kmax,1,3,tol=tol)
+  m=res$objective
+  m=m*m
+  
+  sample=sample-m
+  v=sum(sample*sample)
+  v=v/n
+  
+  return(sqrt(v))
+}
+
 bootstrap_test1<-function(alpha, frequency, kmin, kmax,
                           scale,nSimulation, tol=NA)
 {
@@ -29,7 +55,8 @@ bootstrap_test1<-function(alpha, frequency, kmin, kmax,
   beta=res$minimum
   distance=res$objective
   
-  vol=bootstrap_stdev1(p,n,nSimulation,kmin,kmax,tol)
+  # vol=bootstrap_stdev1(p,n,nSimulation,kmin,kmax,tol)
+  vol=bootstrap_stdev1_bias(p,n,nSimulation,kmin,kmax,tol)
   qt=qnorm(1-alpha,0,1)
   min_eps = distance*distance + qt*vol
   min_eps=sqrt(min_eps)
