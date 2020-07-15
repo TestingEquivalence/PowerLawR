@@ -14,11 +14,13 @@ asympt_stdev<-function(p,derivative){
   
   k=length(p)
   vnsq_2=0
-  for (j1 in 1:k)
-    for (j2 in 1:k)
-      vnsq_2 = vnsq_2 + vec[j1] * vec[j2] * p[j1] * p[j2]
-  
-  
+  for (j1 in 1:k){
+    v=vec[j1]*vec
+    v=v*p[j1]
+    v=v*p
+    vnsq_2=vnsq_2+sum(v)
+  }
+
   vnsq  = vnsq_1 - vnsq_2
   return (sqrt(vnsq))
 }

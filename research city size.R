@@ -15,8 +15,8 @@ kmins=c(10e3,20e3,30e3,40e3,50e3)
 #different k_max values, first value coincides with largest city
 kmaxs=c(max(citySize),5e6,10e6,20e6)
 
-parameter=list(scale=1e3,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
-               test="bootstrap2", kmins=kmins, kmaxs=kmaxs, counting=citySize)
+parameter=list(scale=10e3,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
+               test="asymptotic", kmins=kmins, kmaxs=kmaxs, counting=citySize)
 
 #carry out multiple tests for the power law
 #given test is computed for each combination of k_min and k_max 

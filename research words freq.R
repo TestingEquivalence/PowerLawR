@@ -16,7 +16,7 @@ words=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\WordCou
 #kmaxs=c(max(words),2e6,5e6,10e6)
 
 parameter=list(scale=1000,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
-               test="bootstrap1", 
+               test="asymptotic", 
                kmins=c(1000,2000,3000, 5000, 10000), 
                kmaxs=c(max(words),2e6,5e6,10e6), 
                counting=words)
