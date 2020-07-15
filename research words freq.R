@@ -67,7 +67,6 @@ parameter=list(kmin=1000, kmax=5e6, scale=1000, nSamples=1000, n=1984,
 
 
 for (eps in c(0.10,0.12)){
-  parameter$boundaryPointType=2
   parameter$eps=eps
   pw=boundaryPower(parameter)
   write.table(pw, paste("uniformRandomStress",eps*100,".csv"))

@@ -18,34 +18,15 @@ uniformRandomStress<-function(kmin,kmax,beta,eps){
   }
 }
 
-powerLawStress<-function(n,eps,kmin,kmax,beta){
-  p=powerLawDensity(beta,kmin,kmax)
-  q=closeRandomPoint(p,n, eps,beta,kmin,kmax)
-  lp=linearBoundaryPoint(p,q,eps,kmin,kmax)
-  res=nearestPowerLaw(cumsum(lp),kmin,kmax,1,3)
-  return(lp)
-}
-
-
 boundaryPower<-function(parameter){
   
   i=c(1:100)
   
-  if (parameter$boundaryPointType==1){
-    f<-function(i){
-      powerLawStress(n=parameter$n,eps=parameter$eps,
-                     kmin=parameter$kmin/parameter$scale,
-                     kmax=parameter$kmax/parameter$scale,parameter$beta)
-    }  
-  }
-  
-  if (parameter$boundaryPointType==2){
-    f<-function(i){
-      uniformRandomStress(kmin=parameter$kmin/parameter$scale,
-                          kmax=parameter$kmax/parameter$scale,
-                          parameter$beta,
-                          parameter$eps)
-    }
+  f<-function(i){
+    uniformRandomStress(kmin=parameter$kmin/parameter$scale,
+                        kmax=parameter$kmax/parameter$scale,
+                        parameter$beta,
+                        parameter$eps)
   }
   
   set.seed(01012020)

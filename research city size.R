@@ -56,16 +56,7 @@ parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662, beta=2.15,
                alpha=0.05, tol=0.001,nSimulation=1000,
                test="bootstrap1",epsAdj=1)  
 
-
 for (eps in c(0.08,0.10,0.12)){
-  parameter$boundaryPointType=1
-  parameter$eps=eps
-  pw=boundaryPower(parameter)
-  write.table(pw, paste("powerLawStress",eps*100,".csv"))
-}
-
-for (eps in c(0.08,0.10,0.12)){
-  parameter$boundaryPointType=2
   parameter$eps=eps
   pw=boundaryPower(parameter)
   write.table(pw, paste("uniformRandomStress",eps*100,".csv"))
