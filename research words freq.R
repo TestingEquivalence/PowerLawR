@@ -61,8 +61,8 @@ for (beta in c(1.9, 2.0, 2.05, 2.1)) {
  
 # compute test power at boundary points
 ###########################################
-parameter=list(kmin=1000, kmax=5e6, scale=1000, nSamples=1000, n=1984, 
-               beta=1.9, alpha=0.05, tol=0.001, nSimulation=100,
+parameter=list(kmin=700, kmax=5e6, scale=100, nSamples=1000, n=2839, 
+               beta=2.05, alpha=0.05, tol=0.001, nSimulation=100,
                test="asymptotic", epsAdj=1)  
 
 

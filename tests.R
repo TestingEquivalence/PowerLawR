@@ -116,12 +116,12 @@ multiple_test <- function(parameter) {
   grd=expand.grid(i,j)
   colnames(grd)=c("i","j")
   
-  # cl=getCluster()
-  # clusterExport(cl,c("fmultiple"))
-  # ls=parApply(cl,grd, 1, fmultiple,parameter)
-  # stopCluster(cl)
+  cl=getCluster()
+  clusterExport(cl,c("fmultiple"))
+  ls=parApply(cl,grd, 1, fmultiple,parameter)
+  stopCluster(cl)
   
-  ls=apply(grd, 1, fmultiple, parameter)
+  # ls=apply(grd, 1, fmultiple, parameter)
  
   for (rn in c(1:ncol(ls))){
     r=ls[,rn]
