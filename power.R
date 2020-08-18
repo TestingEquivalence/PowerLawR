@@ -20,7 +20,6 @@ uniformRandomStress<-function(kmin,kmax,beta,eps){
 
 boundaryPower<-function(parameter){
   
-  i=c(1:100)
   
   f<-function(i){
     uniformRandomStress(kmin=parameter$kmin/parameter$scale,
@@ -29,11 +28,19 @@ boundaryPower<-function(parameter){
                         parameter$eps)
   }
   
+  # initial seed
   set.seed(01012020)
-  points=lapply(i, f)
-  
   parameter$eps=parameter$eps*parameter$epsAdj
-  res=powerAtPoints(points, parameter)
+  res=c()
+  
+  for (j in c(1:10)){
+    
+    i=c(1:10)
+    points=lapply(i, f)
+    res=c(res,powerAtPoints(points, parameter))
+    print(paste("block",j,"done!", sep=" "))
+  }
+  
   return(res)
 }
 
