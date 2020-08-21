@@ -30,14 +30,16 @@ boundaryPower<-function(parameter){
   
   # initial seed
   set.seed(01012020)
-  parameter$eps=parameter$eps*parameter$epsAdj
+ 
   res=c()
   
   for (j in c(1:10)){
     
     i=c(1:10)
     points=lapply(i, f)
-    res=c(res,powerAtPoints(points, parameter))
+    parameterAdj=parameter
+    parameterAdj$eps=parameter$eps*parameter$epsAdj
+    res=c(res,powerAtPoints(points, parameter=parameterAdj))
     print(paste("block",j,"done!", sep=" "))
   }
   
