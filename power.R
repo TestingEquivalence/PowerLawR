@@ -33,15 +33,11 @@ boundaryPower<-function(parameter){
  
   res=c()
   
-  for (j in c(1:10)){
-    
-    i=c(1:10)
-    points=lapply(i, f)
-    parameterAdj=parameter
-    parameterAdj$eps=parameter$eps*parameter$epsAdj
-    res=c(res,powerAtPoints(points, parameter=parameterAdj))
-    print(paste("block",j,"done!", sep=" "))
-  }
+  i=c(1:10)
+  points=lapply(i, f)
+  parameterAdj=parameter
+  parameterAdj$eps=parameter$eps*parameter$epsAdj
+  res=powerAtPoints(points, parameter=parameterAdj)
   
   return(res)
 }

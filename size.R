@@ -4,43 +4,31 @@ fullToss<-function(i,parameter){
   
   if (parameter$test=="asymptotic"){
     res=asymptotic_test(alpha = parameter$alpha,frequency = counting,
-                        kmin = parameter$kmin,kmax =  parameter$kmax,
-                        scale = parameter$scale,tol = parameter$tol)
+                        kmin = parameter$kmin,tol = parameter$tol)
     return(res)
   }
   
-  if (parameter$test=="bootstrap1"){
-    res=bootstrap_test1(alpha = parameter$alpha, frequency = counting,
-                        kmin = parameter$kmin,kmax = parameter$kmax,
-                        scale = parameter$scale, nSimulation = parameter$nSimulation,
-                        tol=parameter$tol)
-    return(res)
-  }
-  
-  if (parameter$test=="bootstrap2"){
-    res=bootstrap_test2(frequency = counting, kmin=parameter$kmin, kmax=parameter$kmax,
-                        scale = parameter$scale,nSimulation = parameter$nSimulation,
-                        nDirections = parameter$nDirections,eps=parameter$eps,
-                        tol=parameter$tol)
+  if (parameter$test=="bootstrap"){
+    res=bootstrap_test(alpha = parameter$alpha, frequency = counting,
+                       nSimulation = parameter$nSimulation, tol=parameter$tol)
     return(res)
   }
   
   if (parameter$test=="MLE"){
-    res=powerLawMLE(counting,
-                    kmin=parameter$kmin/parameter$scale,
-                    kmax=parameter$kmax/parameter$scale,1,3)
+    res=powerLawMLE(counting,kmin=parameter$kmin,kmax=parameter$kmax,1,3)
     return(res)
   }
-  
+
   return(NA)
 }
 
 sizeAtPowerLaw<-function(parameter){
   #calculate density of discrete power law
-  kmin=parameter$kmin/parameter$scale
-  kmax=parameter$kmax/parameter$scale
-  beta=parameter$beta
-  parameter$p=powerLawDensity(beta,kmin,kmax)
+  parameter$kmin=parameter$kmin/parameter$scale
+  parameter$kmax=parameter$kmax/parameter$scale
+  parameter$scale=1
+
+  parameter$p=powerLawDensity(parameter$beta,parameter$kmin,parameter$kmax)
   
   #simulate tests
   #v=sapply(i, fullToss,p,n,kmin,kmax,scale)

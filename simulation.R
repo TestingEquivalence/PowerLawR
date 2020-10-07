@@ -9,9 +9,8 @@ getCluster<-function(){
   clusterExport(cl,c("powerLawDensity","powerLawCDF","l2","nearestPowerLaw","derivative",
                      "asympt_stdev","asymptotic_test","bootstrap_test",
                      "list2freq","fullToss","powerLawLikelihood",
-                     "bootstrap_stdev1","bootstrap_test1","powerLawMLE",
-                     "bootstrap_test2","bootstrap_test2_1","test",
-                     "closeRandomPoint","linComb","linearBoundaryPoint"))
+                     "bootstrap_stdev1","bootstrap_test","powerLawMLE",
+                     "test","closeRandomPoint","linComb","linearBoundaryPoint"))
   
   return(cl)
 }
@@ -19,25 +18,17 @@ getCluster<-function(){
 test<-function(counting,parameter){
   if (parameter$test=="asymptotic"){
     res=asymptotic_test(alpha = parameter$alpha,frequency = counting,
-                        kmin = parameter$kmin,kmax =  parameter$kmax,
-                        scale = parameter$scale,tol = parameter$tol)
+                        kmin = parameter$kmin/parameter$scale,
+                        tol = parameter$tol)
     return(res[1]<parameter$eps)
   }
   
-  if (parameter$test=="bootstrap1"){
-    res=bootstrap_test1(alpha = parameter$alpha, frequency = counting,
-                        kmin = parameter$kmin,kmax = parameter$kmax,
-                        scale = parameter$scale, nSimulation = parameter$nSimulation,
+  if (parameter$test=="bootstrap"){
+    res=bootstrap_test(alpha = parameter$alpha, frequency = counting,
+                        kmin = parameter$kmin/parameter$scale, 
+                        nSimulation = parameter$nSimulation,
                         tol=parameter$tol)
     return(res[1]<parameter$eps)
-  }
-  
-  if (parameter$test=="bootstrap2"){
-    pval=bootstrap_test2(frequency = counting, kmin=parameter$kmin, kmax=parameter$kmax,
-                        scale = parameter$scale,nSimulation = parameter$nSimulation,
-                        nDirections = parameter$nDirections,eps=parameter$eps,
-                        tol=parameter$tol)
-    return(pval<parameter$alpha)
   }
   
   return(NA)

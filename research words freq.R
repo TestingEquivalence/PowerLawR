@@ -7,7 +7,7 @@ source("size.R")
 source("bootstrap_tests.R")
 
 #vector of city sizes in Germany
-words=readVector("C:\\Users\\Ostrovski\\Google Drive\\Writing\\PowerLaw\\WordCounts\\words.csv")
+words=readVector("C:\\Users\\xxx\\Google Drive\\Writing\\PowerLaw\\WordCounts\\words.csv")
 
 #different k_min values
 #kmins=c(500,600,700,800,1000)

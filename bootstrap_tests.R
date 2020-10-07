@@ -16,16 +16,14 @@ bootstrap_stdev1<-function(p,n,nSimulation,kmin,kmax, tol){
 }
 
 
-bootstrap_test1<-function(alpha, frequency, kmin, kmax,
-                          scale,nSimulation, tol=NA)
+bootstrap_test<-function(alpha, frequency, kmin, kmax,
+                         nSimulation, tol=NA)
 {
   #calcualte cdf
   n=sum(frequency)
   p=frequency/n
   cdf=cumsum(p)
-  kmin=kmin/scale
-  kmax=kmax/scale
-  
+ 
   res = nearestPowerLaw(cdf,kmin,kmax,1,3,tol)
   beta=res$minimum
   distance=res$objective
