@@ -33,7 +33,7 @@ boundaryPower<-function(parameter){
  
   res=c()
   
-  i=c(1:10)
+  i=c(1:100)
   points=lapply(i, f)
   parameterAdj=parameter
   parameterAdj$eps=parameter$eps*parameter$epsAdj
