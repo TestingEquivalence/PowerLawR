@@ -28,11 +28,14 @@ sizeAtPowerLaw<-function(parameter){
   parameter$kmax=parameter$kmax/parameter$scale
   parameter$scale=1
 
-  parameter$p=powerLawDensity(parameter$beta,parameter$kmin,parameter$kmax)
-  
-  #simulate tests
-  #v=sapply(i, fullToss,p,n,kmin,kmax,scale)
+  parameter$p=powerLawDensity(beta = parameter$beta,
+                              kmin = parameter$kmin,
+                              kmax = parameter$kmax)
   i=c(1:parameter$nSamples)
+  
+  # simulate tests
+  # v=sapply(i, fullToss,parameter)
+  
   cl=getCluster()
   v=parSapply(cl,i, fullToss,parameter)
   stopCluster(cl)
