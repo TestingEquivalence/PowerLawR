@@ -1,3 +1,5 @@
+asymptotic="asymptotic"
+bootstrap="bootstrap"
 
 derivative<-function(F1,F2)
 {
@@ -70,7 +72,6 @@ fmultiple<-function(row,parameter){
     set.seed(30062020)
     res= bootstrap_test(alpha = parameter$alpha, frequency,
                         kmin=kmin/parameter$scale,
-                        kmax=kmax/parameter$scale,
                         nSimulation = parameter$nSimulation,
                         tol=parameter$tol)
   }

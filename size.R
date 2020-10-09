@@ -10,6 +10,7 @@ fullToss<-function(i,parameter){
   
   if (parameter$test=="bootstrap"){
     res=bootstrap_test(alpha = parameter$alpha, frequency = counting,
+                       kmin = parameter$kmin,
                        nSimulation = parameter$nSimulation, tol=parameter$tol)
     return(res)
   }
