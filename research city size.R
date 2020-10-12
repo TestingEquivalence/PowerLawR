@@ -17,7 +17,7 @@ kmins=c(10e3,20e3,30e3,40e3,50e3)
 kmaxs=c(max(citySize),5e6,10e6,20e6)
 
 parameter=list(scale=10e3,alpha=0.05, tol=0.001,nSimulation=1000,  
-               test=bootstrap, kmins=kmins, kmaxs=kmaxs, counting=citySize)
+               test=asymptotic, kmins=kmins, kmaxs=kmaxs, counting=citySize)
 
 #carry out multiple tests for the power law
 #given test is computed for each combination of k_min and k_max 
@@ -41,7 +41,7 @@ write.table(result$sample_size,paste("MLE_sample_size.csv"))
 ###########################################
 
 parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662,
-          alpha=0.05, tol=0.001,nSimulation=1000, test=bootstrap)  
+          alpha=0.05, tol=0.001,nSimulation=1000, test=asymptotic)  
 
 
 for (beta in c(2.1,2.2,2.3,2.4,2.5)) {
@@ -55,7 +55,7 @@ for (beta in c(2.1,2.2,2.3,2.4,2.5)) {
 ###########################################
 parameter=list(kmin=20e3,kmax=10e6,scale=10e3,nSamples=1000,n=662, beta=2.15,
                alpha=0.05, tol=0.001,nSimulation=1000,
-               test=bootstrap,epsAdj=1)  
+               test=asymptotic,epsAdj=1)  
 
 for (eps in c(0.08,0.10,0.12)){
   parameter$eps=eps

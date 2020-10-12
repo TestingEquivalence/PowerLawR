@@ -6,27 +6,14 @@ source("simulation.R")
 source("size.R")
 source("bootstrap_tests.R")
 
-#vector of city sizes in Germany
-words=readVector("C:\\Users\\xxx\\Google Drive\\Writing\\PowerLaw\\WordCounts\\words.csv")
+#vector of word counts in contemporary american english corpora
+words=readVector("C:\\data\\words.csv")
 
-#different k_min values
-#kmins=c(500,600,700,800,1000)
-
-#different k_max values, first value coincides with most frequent word
-#kmaxs=c(max(words),2e6,5e6,10e6)
-
-parameter=list(scale=1000,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
-               test="asymptotic", 
+parameter=list(scale=1000,alpha=0.05, tol=0.001,nSimulation=1000,  
+               test=asymptotic, 
                kmins=c(1000,2000,3000, 5000, 10000), 
                kmaxs=c(max(words),2e6,5e6,10e6), 
                counting=words)
-
-parameter=list(scale=10,alpha=0.05, tol=0.001,nSimulation=1000, nDirections = 100, 
-               test="asymptotic",    #"bootstrap1"
-               kmins=c(500, 600, 700,800, 1000), 
-               kmaxs=c(max(words),2e6,5e6,10e6), 
-               counting=words)
-
 
 #carry out multiple tests for the power law
 #given test is computed for each combination of k_min and k_max 
@@ -50,7 +37,7 @@ write.table(result$sample_size,paste("MLE_sample_size.csv"))
 ###########################################
 parameter=list(kmin=1000, kmax=5e6, scale=1000, nSamples=1000, n=1984,
                alpha=0.05, tol=0.001, nSimulation=100, 
-               test="bootstrap1")  
+               test=asymptotic)  
 
 
 for (beta in c(1.9, 2.0, 2.05, 2.1)) {
@@ -63,7 +50,7 @@ for (beta in c(1.9, 2.0, 2.05, 2.1)) {
 ###########################################
 parameter=list(kmin=700, kmax=5e6, scale=100, nSamples=1000, n=2839, 
                beta=2.05, alpha=0.05, tol=0.001, nSimulation=100,
-               test="asymptotic", epsAdj=1)  
+               test=asymptotic, epsAdj=1)  
 
 
 for (eps in c(0.20)){
