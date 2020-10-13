@@ -22,10 +22,23 @@ simulation=rmultinom(n=1,size=n,prob=massFunc) #simulate from power law
 #-----------------------------------------
 
 
-# Attention, kmax equals length(frequency)+kmin-1
+# Attention, kmax will be calculated from kmin and length of the frequency
+# If you need larger kmax parameter then simply add sufficiently number of zeros
+# to the right side of the frequency vector.
+
+# The parameter of the asymptotic tests are:
+# alpha - significancy level 
+# frequency - vector of observed frequencies
+# kmin - lower bound of power law 
 result=asymptotic_test(alpha=0.05,
                        frequency = simulation,
                        kmin=kmin)
+
+# the results contains:
+# min_eps - the minimim tolerance parameter fo which H0 can be rejected
+# distance -Euclidean distance between empirical CDF and CDF of the closest power law
+# beta - minimum distance estimate of power law exponent
+# sample_size - sample size
 print(result)
 
 # apply bootstrap test to simulated frequency data
