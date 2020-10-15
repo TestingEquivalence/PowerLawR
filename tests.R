@@ -31,6 +31,24 @@ asympt_stdev<-function(p,derivative){
   return (sqrt(vnsq))
 }
 
+#' The asymptotic test is based on the asymptotic distribution of the test statistic. 
+#' The test statistic is the minimum Euclidean distance between the empirical CDF 
+#' and the family of power laws with given lower and upper bounds.
+#' The test should be used carefully because it is approximate 
+#' and may be anti-conservative at some points. 
+#' In order to obtain a conservative test reducing of alpha  (usually halving) or
+#' slight shrinkage of the tolerance parameter may be appropriate.
+#' \code{asymptotic_test} asymptotic equivalence test for power law
+#' @param alpha significance level
+#' @param frequency vector of observed counting frequencies
+#' @param kmin lower bound of the power law
+#' @param tol optional tolerance parameter for the numerical optimization 
+#' to find the closest power law 
+#' @return test returns:
+#' min_eps - the minimim tolerance parameter fo which H0 can be rejected
+#' distance -Euclidean distance between empirical CDF and CDF of the closest power law
+#' beta - minimum distance estimate of power law exponent
+#' sample_size - sample size
 asymptotic_test<-function(alpha, frequency, kmin, tol=NA)
 {
   #calcualte cdf
