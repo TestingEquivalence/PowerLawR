@@ -82,16 +82,14 @@ fmultiple<-function(row,parameter){
   
   if (parameter$test=="asymptotic"){
     res=asymptotic_test(alpha = parameter$alpha,frequency,
-                        kmin=kmin/parameter$scale,
-                        tol = parameter$tol)
+                        kmin=kmin/parameter$scale)
   }
   
   if (parameter$test=="bootstrap"){
     set.seed(30062020)
     res= bootstrap_test(alpha = parameter$alpha, frequency,
                         kmin=kmin/parameter$scale,
-                        nSimulation = parameter$nSimulation,
-                        tol=parameter$tol)
+                        nSimulation = parameter$nSimulation)
   }
   
   return(c(row[1],row[2],res))
@@ -124,7 +122,7 @@ multiple_test <- function(parameter) {
   clusterExport(cl,c("fmultiple"))
   ls=parApply(cl,grd, 1, fmultiple,parameter)
   stopCluster(cl)
-  
+
   # ls=apply(grd, 1, fmultiple, parameter)
  
   for (rn in c(1:ncol(ls))){

@@ -83,3 +83,27 @@ for (i in c(kmin:kmax)){
   m=simulation[i-kmin+1]
   counting=c(counting,rep(i,m))
 }
+
+# Next we define parameters for the multiple equivalence tests:
+
+parameter=list(scale=1, 
+               alpha=0.05, 
+               nSimulation=1000,  
+               test=asymptotic, 
+               kmins=c(1,2,5,10), 
+               kmaxs=c(5000,10000,20000), 
+               counting=counting)
+result=multiple_test(parameter)
+
+# Table of the estimated beta's (minimum distance estimate of power law exponent): 
+result$beta
+
+# Table of Euclidean distances between empirical CDF and CDF of the closest power law
+result$distance
+
+# Table of sample sizes
+result$sample_size
+
+# Table of  min_eps - the minimim tolerance parameters fo which H0 can be rejected
+result$min_eps
+
