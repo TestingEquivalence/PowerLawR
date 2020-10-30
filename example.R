@@ -6,7 +6,7 @@ source("simulation.R")
 source("size.R")
 source("bootstrap_tests.R")
 
-# generate syntetic power law data first
+# generate synthetic power law data first
 #-----------------------------------------
 kmin=1 # lower cut off >=1
 kmax=10000 # upper cut off
@@ -27,7 +27,7 @@ simulation=rmultinom(n=1,size=n,prob=massFunc) #simulate from power law
 # to the right side of the frequency vector.
 
 # The parameter of the asymptotic tests are:
-# alpha - significancy level 
+# alpha - significance level 
 # frequency - vector of observed frequencies
 # kmin - lower bound of power law 
 result=asymptotic_test(alpha=0.05,
@@ -35,7 +35,7 @@ result=asymptotic_test(alpha=0.05,
                        kmin=kmin)
 
 # the results contains:
-# min_eps - the minimim tolerance parameter fo which H0 can be rejected
+# min_eps - the minimum tolerance parameter for which H0 can be rejected
 # distance -Euclidean distance between empirical CDF and CDF of the closest power law
 # beta - minimum distance estimate of power law exponent
 # sample_size - sample size
@@ -50,7 +50,7 @@ print(result)
 # to the right side of the frequency vector.
 
 # The parameter of the asymptotic tests are:
-# alpha - significancy level 
+# alpha -  significance level
 # frequency - vector of observed frequencies
 # kmin - lower bound of power law
 # nSimulation - number of bootstrap samples
@@ -61,7 +61,7 @@ result=bootstrap_test(alpha=0.05,
                       kmin=kmin)
 
 # the results contains:
-# min_eps - the minimim tolerance parameter fo which H0 can be rejected
+# min_eps - the minimum tolerance parameter for which H0 can be rejected
 # distance -Euclidean distance between empirical CDF and CDF of the closest power law
 # beta - minimum distance estimate of power law exponent
 # sample_size - sample size
@@ -69,11 +69,11 @@ result=bootstrap_test(alpha=0.05,
 print(result)
 
 #------------------------------------------------------------------------------------
-# Usually we do not obesrve the frequency data directly. 
+# Usually we do not observe the frequency data directly. 
 # Instead we observe the counting data only and also do not know the upper and lower bound
-# of the power low. In this case we need to transform the counting dat to frequencies and
+# of the power low. In this case we need to transform the counting date to frequencies and
 # we also may perform multiple equivalence tests for different values of upper 
-# and lower bounds. Here we shoe the specific function "multiple_test" to perform these
+# and lower bounds. Here we show the convenient function "multiple_test" to perform these
 # tasks efficiently.
 
 # First we transform our frequency data t counting data:
@@ -86,13 +86,13 @@ for (i in c(kmin:kmax)){
 
 # Next we define parameters for the multiple equivalence tests:
 
-parameter=list(scale=1, 
-               alpha=0.05, 
-               nSimulation=1000,  
-               test=asymptotic, 
-               kmins=c(1,2,5,10), 
-               kmaxs=c(5000,10000,20000), 
-               counting=counting)
+parameter=list(scale=1, #scaling maybe necessary to make computations feasible
+               alpha=0.05, #significance level 
+               nSimulation=1000, #number of bootstrap replications  
+               test=asymptotic, # test should be asymptotic or bootstrap
+               kmins=c(1,2,5,10), # possible lower bounds of power law
+               kmaxs=c(5000,10000,20000), # possible upper bounds of power law
+               counting=counting) # counting data  where the upper and lower bounds are unknown
 result=multiple_test(parameter)
 
 # Table of the estimated beta's (minimum distance estimate of power law exponent): 
@@ -104,6 +104,6 @@ result$distance
 # Table of sample sizes
 result$sample_size
 
-# Table of  min_eps - the minimim tolerance parameters fo which H0 can be rejected
+# Table of  min_eps - the minimum tolerance parameters for which H0 can be rejected
 result$min_eps
 

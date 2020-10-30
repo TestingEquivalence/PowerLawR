@@ -95,6 +95,30 @@ fmultiple<-function(row,parameter){
   return(c(row[1],row[2],res))
 }
 
+#' 
+#' \code{multiple_test} Convenient function to perform multiple equivalence tests on the same data.
+#' It also transforms the usual counting data to frequency data. 
+#' Usually we observe the counting data only and also do not know 
+#' the upper and lower bound of the power low. 
+#' In this case we need to transform the counting date to frequencies . 
+#' We also may perform multiple equivalence tests for different values of upper and lower bounds. 
+#' The convenient function "multiple_test" performs all these tasks efficiently 
+#' using multiple cores for computing.
+#' @param parameter The parameter should be a list (s3 object) 
+#' containing following fields (see example.R):
+#' scale - scaling, which maybe necessary to make computations feasible
+#' alpha - significance level 
+#' nSimulation - number of bootstrap replications  
+#' test - string, should be asymptotic or bootstrap
+#' kmins - vector of possible lower bounds of power law
+#' kmaxs - vector of possible upper bounds of power law
+#' counting - counting data  where the upper and lower bounds are unknown 
+#' @return test returns list of four tables:
+#' beta - table of the estimated beta's (minimum distance estimate of power law exponent)
+#' distance - table of Euclidean distances between empirical CDF and CDF of the closest power law
+#' sample_size - table of sample sizes
+#' min_eps - table of the minimum tolerance parameters for which H0 can be rejected
+
 multiple_test <- function(parameter) {
   nrow=length(parameter$kmins)
   ncol = length(parameter$kmaxs)
